@@ -33,19 +33,5 @@
       "MM_FEATDONE #${1:issue_number}"
     ],
     "description": "Signal QA passed for feature, squash-merge PR, and sync main branch"
-  },
-  "MM Enable Suite": {
-    "prefix": "mmon",
-    "body": [
-      "MM_ON"
-    ],
-    "description": "Activate the MM Dual-Agent Suite workflows"
-  },
-  "MM Disable Suite": {
-    "prefix": "mmoff",
-    "body": [
-      "MM_OFF"
-    ],
-    "description": "Pause the MM Dual-Agent Suite for normal AI chat"
   }
 }

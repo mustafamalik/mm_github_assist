@@ -1,0 +1,8 @@
+{
+  "name": "mm_gh_agent",
+  "role": "GitHub Assistant",
+  "tools": [
+    "gh",
+    "git"
+  ]
+}

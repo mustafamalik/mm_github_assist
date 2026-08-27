@@ -4,6 +4,8 @@ const path = require('path');
 const CLAUDE_MD_SECTION = `
 <!-- MM_DUAL_AGENT_START -->
 # MM Dual-Agent Commands (mm_vc_agent & mm_gh_agent)
+- \`MM_ON\` / \`MM_ENABLE\`: Activate MM automated workflow.
+- \`MM_OFF\` / \`MM_DISABLE\`: Pause MM automated workflow for standard chat.
 - \`MM_BUG [details]\`: Start bug triage, root cause analysis, and plan.
 - \`MM_FEAT [details]\`: Start feature design, file architecture, and plan.
 - \`MM_GETISSUE\`: Retrieve active GitHub issue, PR URL, and branch context.
