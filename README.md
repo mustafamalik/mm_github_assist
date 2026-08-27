@@ -108,26 +108,25 @@ If you prefer using a token instead of the GitHub CLI:
 
 ---
 
-### 3.3 IDE Terminal Permissions (Allowlisting `git` & `gh`) — *Recommended for Seamless Flow*
+### 3.3 IDE Terminal Permissions (Granular Command Allowlist) — *Recommended for Seamless Flow*
 
-To allow `mm_gh_agent` to manage branches, issues, and PRs without interrupting you with repetitive terminal confirmation dialogs, add `git` and `gh` to your IDE's auto-approved command list:
+To allow `mm_gh_agent` to manage branches, issues, and PRs without interrupting you with repetitive terminal confirmation dialogs, add these **specific 2-to-3 token command prefixes** to your IDE's auto-approved command list:
 
-#### 1. Google Antigravity IDE:
-1. Open **Settings / Preferences ➔ Advanced**.
-2. Scroll to **Allow List Terminal Commands**.
-3. Add the following command prefixes:
-   - `git`
-   - `gh`
-   - `npm run build`
-   - `tsc`
+#### Specific Command Prefixes Used by the Agents:
+| Category | Specific Command Prefix to Allow | Purpose |
+| :--- | :--- | :--- |
+| **GitHub Issues** | `gh issue create`, `gh issue view`, `gh issue close` | Create, read, and close issues |
+| **GitHub Pull Requests** | `gh pr create`, `gh pr view`, `gh pr merge` | Open PRs, check status, and squash-merge |
+| **GitHub Auth Check** | `gh auth status` | Verify authentication |
+| **Git Branching** | `git checkout`, `git branch` | Switch/create feature branches and sync main |
+| **Git Status & Staging** | `git status`, `git add` | Check workspace state and stage modified files |
+| **Git Commit & Push/Pull** | `git commit`, `git push`, `git pull` | Create tracked commits, push PRs, pull latest |
+| **Pre-Merge Verification** | `npm run build`, `npx tsc` | Sanity validation before merging |
 
-#### 2. Cursor:
-1. Open **Settings ➔ Features ➔ Terminal / Composer**.
-2. Enable auto-run / allowlist for `git` and `gh`.
-
-#### 3. VS Code (Cline / Roo Code / Copilot):
-1. In the AI assistant extension settings, enable **Auto-approve terminal commands**.
-2. Add `git *` and `gh *` to the allowed command pattern list.
+#### How to Configure in Your IDE:
+* **Google Antigravity IDE**: Go to **Settings ➔ Advanced ➔ Allow List Terminal Commands**, and enter the specific prefixes from the table above (e.g. `gh issue create`, `gh pr create`, `gh pr merge`, `git checkout`, `git commit`, `git push`, `git pull`).
+* **Cursor**: Go to **Settings ➔ Features ➔ Terminal / Composer**, and add the exact prefixes above to auto-approved commands.
+* **VS Code (Cline / Roo Code / Copilot)**: In extension settings under **Auto-approved terminal commands**, add the specific prefixes above.
 
 ---
 
