@@ -1,0 +1,9 @@
+
+<!-- MM_DUAL_AGENT_START -->
+# MM Dual-Agent Commands (mm_vc_agent & mm_gh_agent)
+- `MM_BUG [details]`: Start bug triage, root cause analysis, and plan.
+- `MM_FEAT [details]`: Start feature design, file architecture, and plan.
+- `MM_GETISSUE`: Retrieve active GitHub issue, PR URL, and branch context.
+- `MM_BUGFIXED #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
+- `MM_FEATDONE #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
+<!-- MM_DUAL_AGENT_END -->

@@ -187,15 +187,17 @@ sequenceDiagram
 
 ## 6. Complete Command & Trigger Reference
 
-| Command                 | Trigger Agent | Purpose & What It Does                                                                                      | Example                                                   |
-| :---------------------- | :------------ | :---------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
-| **`MM_BUG [details]`**  | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan.      | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
-| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation.       | `MM_FEAT Add export CSV button with date range filter`    |
-| **`MM_GETISSUE`**       | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long.                     | `MM_GETISSUE`                                             |
-| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`)                     |
-| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch.          | `MM_FEATDONE #143` (or `MM_FEATDONE`)                     |
-| **`--cautious`**        | Flag          | Enforces strict confirmation at every individual transition step.                                           | `MM_BUG --cautious Fix chart overflow`                    |
-| **`--nocautious`**      | Flag          | Fast-tracks execution, pausing only at Initial Plan and Final QA.                                           | `MM_BUG --nocautious Fix chart overflow`                  |
+| Command | Trigger Agent | Purpose & What It Does | Example |
+| :--- | :--- | :--- | :--- |
+| **`MM_ON`** / **`MM_ENABLE`** | Suite Control | Activates the automated MM Dual-Agent pair programming and GitHub tracking. | `MM_ON` |
+| **`MM_OFF`** / **`MM_DISABLE`** | Suite Control | Pauses the MM suite for standard, unconstrained AI chat without issue/PR tracking. | `MM_OFF` |
+| **`MM_BUG [details]`** | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan. | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
+| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation. | `MM_FEAT Add export CSV button with date range filter` |
+| **`MM_GETISSUE`** | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long. | `MM_GETISSUE` |
+| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`) |
+| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch. | `MM_FEATDONE #143` (or `MM_FEATDONE`) |
+| **`--cautious`** | Flag | Enforces strict confirmation at every individual transition step. | `MM_BUG --cautious Fix chart overflow` |
+| **`--nocautious`** | Flag | Fast-tracks execution, pausing only at Initial Plan and Final QA. | `MM_BUG --nocautious Fix chart overflow` |
 
 ---
 
@@ -203,15 +205,17 @@ sequenceDiagram
 
 Once installed, use these built-in snippets in your IDE chat or files:
 
-| Snippet Shortcut | Action               | What Gets Injected |
-| :--------------- | :------------------- | :----------------- |
-| `mmbug`          | Press <kbd>Tab</kbd> | `MM_BUG: `         |
-| `mmfeat`         | Press <kbd>Tab</kbd> | `MM_FEAT: `        |
-| `mmgetissue`     | Press <kbd>Tab</kbd> | `MM_GETISSUE`      |
-| `mmfix`          | Press <kbd>Tab</kbd> | `MM_BUGFIXED #`    |
-| `mmdone`         | Press <kbd>Tab</kbd> | `MM_FEATDONE #`    |
+| Snippet Shortcut | Action | What Gets Injected |
+| :--- | :--- | :--- |
+| `mmon` | Press <kbd>Tab</kbd> | `MM_ON` |
+| `mmoff` | Press <kbd>Tab</kbd> | `MM_OFF` |
+| `mmbug` | Press <kbd>Tab</kbd> | `MM_BUG: ` |
+| `mmfeat` | Press <kbd>Tab</kbd> | `MM_FEAT: ` |
+| `mmgetissue` | Press <kbd>Tab</kbd> | `MM_GETISSUE` |
+| `mmfix` | Press <kbd>Tab</kbd> | `MM_BUGFIXED #` |
+| `mmdone` | Press <kbd>Tab</kbd> | `MM_FEATDONE #` |
 
-_(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation)._
+*(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation).*
 
 ---
 

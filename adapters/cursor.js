@@ -9,7 +9,11 @@ alwaysApply: true
 
 # MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
 
-You collaborate as an integrated pair:
+## State Controls
+- \`MM_ON\` / \`MM_ENABLE\`: Activates automated agent pair workflows.
+- \`MM_OFF\` / \`MM_DISABLE\`: Pauses agent workflows for standard chat.
+
+## Integrated Pair (When Active)
 1. **mm_vc_agent (Architect/Coder)**: Ingests \`MM_BUG\` or \`MM_FEAT\`, inspects screenshots and errors, formulates Root Cause, Target Files, and Step-by-Step Blueprint.
 2. **mm_gh_agent (GitHub Assistant)**: Ingests \`PROCEED\`, manages GitHub CLI (\`gh issue\`, \`gh pr\`, git branches), responds to \`MM_GETISSUE\`, and performs squash-merges on \`MM_BUGFIXED\` or \`MM_FEATDONE\`.
 
