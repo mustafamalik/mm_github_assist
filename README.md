@@ -11,7 +11,7 @@
 
 ## 📖 Table of Contents
 
-1. [Overview & The MM Duo](#overview--the-mm-duo)
+1. [Overview](#overview)
 2. [Multi-Developer & Team Attribution](#multi-developer--team-attribution)
 3. [Prerequisites & GitHub Setup (Essential)](#prerequisites--github-setup-essential)
 4. [Quick Installation & Automated Keybinding Setup (30 Seconds)](#quick-installation--automated-keybinding-setup-30-seconds)
@@ -26,7 +26,7 @@
 
 ---
 
-## 1. Overview & The MM Duo
+## 1. Overview
 
 The **MM GitHub Assist Suite** turns your AI assistant into an agile pair-programming team:
 
