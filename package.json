@@ -1,0 +1,26 @@
+{
+  "name": "mm_github_assist",
+  "version": "1.0.0",
+  "description": "Autonomous AI Pair Programming & GitHub Assistant for Vibe Coding (mm_vc_agent & mm_gh_agent)",
+  "main": "bin/mm-assist.js",
+  "bin": {
+    "mm-github-assist": "bin/mm-assist.js",
+    "mm-gh-assist": "bin/mm-assist.js"
+  },
+  "keywords": [
+    "ai",
+    "vibe-coding",
+    "github-assistant",
+    "antigravity",
+    "cursor",
+    "claude-code",
+    "vscode",
+    "windsurf",
+    "agents"
+  ],
+  "author": "Mustafa Malik (MM)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

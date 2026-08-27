@@ -1,0 +1,37 @@
+{
+  "MM Bug Trigger": {
+    "prefix": "mmbug",
+    "body": [
+      "MM_BUG: ${1:Describe bug symptoms, error message, or UI defect here}"
+    ],
+    "description": "Trigger mm_vc_agent to analyze bug and formulate fix plan"
+  },
+  "MM Feature Trigger": {
+    "prefix": "mmfeat",
+    "body": [
+      "MM_FEAT: ${1:Describe feature requirements and scope here}"
+    ],
+    "description": "Trigger mm_vc_agent to design feature architecture and plan"
+  },
+  "MM Get Active Issue": {
+    "prefix": "mmgetissue",
+    "body": [
+      "MM_GETISSUE"
+    ],
+    "description": "Query mm_gh_agent for current active Issue #, PR, and branch status"
+  },
+  "MM Bug Fixed Sign-off": {
+    "prefix": "mmfix",
+    "body": [
+      "MM_BUGFIXED #${1:issue_number}"
+    ],
+    "description": "Signal QA passed for bug fix, squash-merge PR, and sync main branch"
+  },
+  "MM Feature Done Sign-off": {
+    "prefix": "mmdone",
+    "body": [
+      "MM_FEATDONE #${1:issue_number}"
+    ],
+    "description": "Signal QA passed for feature, squash-merge PR, and sync main branch"
+  }
+}
