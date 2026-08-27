@@ -108,6 +108,29 @@ If you prefer using a token instead of the GitHub CLI:
 
 ---
 
+### 3.3 IDE Terminal Permissions (Allowlisting `git` & `gh`) — *Recommended for Seamless Flow*
+
+To allow `mm_gh_agent` to manage branches, issues, and PRs without interrupting you with repetitive terminal confirmation dialogs, add `git` and `gh` to your IDE's auto-approved command list:
+
+#### 1. Google Antigravity IDE:
+1. Open **Settings / Preferences ➔ Advanced**.
+2. Scroll to **Allow List Terminal Commands**.
+3. Add the following command prefixes:
+   - `git`
+   - `gh`
+   - `npm run build`
+   - `tsc`
+
+#### 2. Cursor:
+1. Open **Settings ➔ Features ➔ Terminal / Composer**.
+2. Enable auto-run / allowlist for `git` and `gh`.
+
+#### 3. VS Code (Cline / Roo Code / Copilot):
+1. In the AI assistant extension settings, enable **Auto-approve terminal commands**.
+2. Add `git *` and `gh *` to the allowed command pattern list.
+
+---
+
 ## 4. Quick Installation & Automated Keybinding Setup (30 Seconds)
 
 Run the automated installer inside any existing project workspace:
