@@ -1,6 +1,7 @@
 # 🚀 MM GitHub Assist (`mm_github_assist`)
+
 > **Autonomous AI Pair Programming & GitHub Assistant for Vibe Coding**  
-> *Crafted by Mustafa Malik (MM)*
+> _version 1.0.0_
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Compatible With](https://img.shields.io/badge/IDE-Antigravity%20%7C%20Cursor%20%7C%20Claude%20%7C%20VS%20Code%20%7C%20Windsurf-orange)]()
@@ -9,6 +10,7 @@
 ---
 
 ## 📖 Table of Contents
+
 1. [Overview & The MM Duo](#overview--the-mm-duo)
 2. [Multi-Developer & Team Attribution](#multi-developer--team-attribution)
 3. [Prerequisites & GitHub Setup (Essential)](#prerequisites--github-setup-essential)
@@ -28,18 +30,19 @@
 
 The **MM GitHub Assist Suite** turns your AI assistant into an agile pair-programming team:
 
-* 🧠 **`mm_vc_agent` (MM Vibe Code Agent / Architect)**: Reads your codebase, analyzes multi-modal bug screenshots, writes clean code adhering to your architecture, and verifies builds locally.
-* 🐙 **`mm_gh_agent` (MM GitHub Assistant / Release Manager)**: An intelligent GitHub assistant that communicates with GitHub, opens Issues with root cause blueprints, creates feature branches, submits Pull Requests, logs iteration notes, and safely squash-merges into your main branch.
+- 🧠 **`mm_vc_agent` (MM Vibe Code Agent / Architect)**: Reads your codebase, analyzes multi-modal bug screenshots, writes clean code adhering to your architecture, and verifies builds locally.
+- 🐙 **`mm_gh_agent` (MM GitHub Assistant / Release Manager)**: An intelligent GitHub assistant that communicates with GitHub, opens Issues with root cause blueprints, creates feature branches, submits Pull Requests, logs iteration notes, and safely squash-merges into your main branch.
 
 ---
 
 ## 2. Multi-Developer & Team Attribution
 
 When multiple team members (e.g., Alice, Bob, and Mustafa) use the MM Dual-Agent Suite on the same project:
-* **Automatic Identity Detection**: The agent inspects the active developer's Git config (`git config user.name`) and GitHub login (`gh auth status`).
-* **Attributed PRs & Comments**: Every PR description and comment is clearly branded with the developer's handle:
+
+- **Automatic Identity Detection**: The agent inspects the active developer's Git config (`git config user.name`) and GitHub login (`gh auth status`).
+- **Attributed PRs & Comments**: Every PR description and comment is clearly branded with the developer's handle:
   `### 🤖 [mm_gh_agent for @mustafamalik] · Status Update`
-* **No Collision**: Each developer gets unique branch names (`fix/142-mustafa-expense-overflow`), ensuring zero branch collisions between teammates.
+- **No Collision**: Each developer gets unique branch names (`fix/142-mustafa-expense-overflow`), ensuring zero branch collisions between teammates.
 
 ---
 
@@ -47,7 +50,8 @@ When multiple team members (e.g., Alice, Bob, and Mustafa) use the MM Dual-Agent
 
 Before using the agents, your local environment needs permissions to talk to GitHub. You have **two easy options**:
 
-### Option A: GitHub CLI (`gh`) — *Recommended (Easiest & Safest)*
+### Option A: GitHub CLI (`gh`) — _Recommended (Easiest & Safest)_
+
 The GitHub CLI allows the agents to run securely using your local authenticated credentials without exposing tokens.
 
 1. **Install GitHub CLI:**
@@ -64,12 +68,19 @@ The GitHub CLI allows the agents to run securely using your local authenticated 
      ```bash
      sudo apt install gh
      ```
-2. **Authenticate with your GitHub account:**
+2. **Reload Terminal Session (Windows Only):**
+   > ⚠️ **Important on Windows:** New terminal sessions or existing windows need their `PATH` refreshed after installing `gh`. Run:
+   ```powershell
+   $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+   ```
+   *(Or simply close and reopen your PowerShell / IDE terminal).*
+
+3. **Authenticate with your GitHub account:**
    ```bash
    gh auth login
    ```
    *Follow the prompts: Choose `GitHub.com` ➔ `HTTPS` or `SSH` ➔ `Login with a web browser`.*
-3. **Verify it works:**
+4. **Verify it works:**
    ```bash
    gh auth status
    ```
@@ -77,7 +88,8 @@ The GitHub CLI allows the agents to run securely using your local authenticated 
 
 ---
 
-### Option B: Personal Access Token (Fine-Grained PAT) — *For Headless or CI Environments*
+### Option B: Personal Access Token (Fine-Grained PAT) — _For Headless or CI Environments_
+
 If you prefer using a token instead of the GitHub CLI:
 
 1. Go to **GitHub Settings ➔ Developer Settings ➔ Personal Access Tokens ➔ Fine-grained tokens** (or [click here](https://github.com/settings/tokens?type=beta)).
@@ -92,7 +104,7 @@ If you prefer using a token instead of the GitHub CLI:
    ```env
    GITHUB_TOKEN=github_pat_your_token_here
    ```
-   *(Note: The installer automatically adds `.env.mm_agent.local` to `.gitignore` so your key is never committed).*
+   _(Note: The installer automatically adds `.env.mm_agent.local` to `.gitignore` so your key is never committed)._
 
 ---
 
@@ -105,6 +117,7 @@ npx mm-github-assist init
 ```
 
 The interactive CLI will automatically:
+
 1. Detect your active code editor (**Antigravity, Cursor, Claude Code, VS Code, Windsurf**).
 2. Validate your GitHub connection (`gh auth status`).
 3. **Auto-Inject `mm_` Tagged Configs**: Injects `.vscode/mm_snippets.code-snippets`, keybindings tagged with `/* MM_KEYBINDINGS_START */`, and rules files without touching existing user configurations.
@@ -141,6 +154,7 @@ sequenceDiagram
 ```
 
 ### What You See on GitHub:
+
 1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Step-by-Step Blueprint.**
 2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` is created.
 3. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
@@ -151,15 +165,15 @@ sequenceDiagram
 
 ## 6. Complete Command & Trigger Reference
 
-| Command | Trigger Agent | Purpose & What It Does | Example |
-| :--- | :--- | :--- | :--- |
-| **`MM_BUG [details]`** | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan. | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
-| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation. | `MM_FEAT Add export CSV button with date range filter` |
-| **`MM_GETISSUE`** | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long. | `MM_GETISSUE` |
-| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`) |
-| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch. | `MM_FEATDONE #143` (or `MM_FEATDONE`) |
-| **`--cautious`** | Flag | Enforces strict confirmation at every individual transition step. | `MM_BUG --cautious Fix chart overflow` |
-| **`--nocautious`** | Flag | Fast-tracks execution, pausing only at Initial Plan and Final QA. | `MM_BUG --nocautious Fix chart overflow` |
+| Command                 | Trigger Agent | Purpose & What It Does                                                                                      | Example                                                   |
+| :---------------------- | :------------ | :---------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| **`MM_BUG [details]`**  | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan.      | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
+| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation.       | `MM_FEAT Add export CSV button with date range filter`    |
+| **`MM_GETISSUE`**       | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long.                     | `MM_GETISSUE`                                             |
+| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`)                     |
+| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch.          | `MM_FEATDONE #143` (or `MM_FEATDONE`)                     |
+| **`--cautious`**        | Flag          | Enforces strict confirmation at every individual transition step.                                           | `MM_BUG --cautious Fix chart overflow`                    |
+| **`--nocautious`**      | Flag          | Fast-tracks execution, pausing only at Initial Plan and Final QA.                                           | `MM_BUG --nocautious Fix chart overflow`                  |
 
 ---
 
@@ -167,69 +181,85 @@ sequenceDiagram
 
 Once installed, use these built-in snippets in your IDE chat or files:
 
-| Snippet Shortcut | Action | What Gets Injected |
-| :--- | :--- | :--- |
-| `mmbug` | Press <kbd>Tab</kbd> | `MM_BUG: ` |
-| `mmfeat` | Press <kbd>Tab</kbd> | `MM_FEAT: ` |
-| `mmgetissue` | Press <kbd>Tab</kbd> | `MM_GETISSUE` |
-| `mmfix` | Press <kbd>Tab</kbd> | `MM_BUGFIXED #` |
-| `mmdone` | Press <kbd>Tab</kbd> | `MM_FEATDONE #` |
+| Snippet Shortcut | Action               | What Gets Injected |
+| :--------------- | :------------------- | :----------------- |
+| `mmbug`          | Press <kbd>Tab</kbd> | `MM_BUG: `         |
+| `mmfeat`         | Press <kbd>Tab</kbd> | `MM_FEAT: `        |
+| `mmgetissue`     | Press <kbd>Tab</kbd> | `MM_GETISSUE`      |
+| `mmfix`          | Press <kbd>Tab</kbd> | `MM_BUGFIXED #`    |
+| `mmdone`         | Press <kbd>Tab</kbd> | `MM_FEATDONE #`    |
 
-*(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation).*
+_(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation)._
 
 ---
 
 ## 8. End-to-End Walkthrough Tutorial
 
 ### Step 1: Reporting a Bug
+
 In your IDE chat, paste a screenshot or error and type:
+
 ```text
 MM_BUG The expense breakdown chart tooltip flickers and gets cut off on mobile screens.
 ```
+
 `mm_vc_agent` will inspect your components, identify the CSS / component issue, and present a **Fix Plan with Root Cause and Target Files**.
 
 ### Step 2: Approving the Plan
+
 You reply:
+
 ```text
 PROCEED
 ```
+
 `mm_gh_agent` creates **GitHub Issue #105** (posting the complete Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
 
 ### Step 3: Coding & PR Creation
+
 `mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` commits, pushes, and creates **Pull Request #106**.
 
 ### Step 4: Testing & Iteration
+
 You test on your local dev server (`npm run dev`). If you notice something minor:
+
 ```text
 The tooltip looks great, but let's make the background slightly darker.
 ```
+
 `mm_vc_agent` adjusts the color, and `mm_gh_agent` pushes an update commit.
 
 ### Step 5: Getting Context in Long Chats
+
 If you've had a long conversation and forgot the issue number:
+
 ```text
 MM_GETISSUE
 ```
+
 `mm_gh_agent` prints the active Issue `#105` and PR `#106` summary card with operator attribution.
 
 ### Step 6: Closing & Merging
+
 Once tested and verified, type:
+
 ```text
 MM_BUGFIXED #105
 ```
+
 `mm_gh_agent` runs a pre-merge sanity check, squash-merges PR `#106`, closes Issue `#105`, checks out `main`, and runs `git pull`.
 
 ---
 
 ## 9. Governance & Safety: `--cautious` vs `--nocautious`
 
-* **`--cautious` (Default / Maximum Safety)**:
+- **`--cautious` (Default / Maximum Safety)**:
   The agents will ask for your explicit confirmation before:
   1. Creating an Issue and Branch on GitHub.
   2. Modifying files in the workspace.
   3. Pushing code and opening a PR.
   4. Merging the PR to main.
-* **`--nocautious` (Fast Execution)**:
+- **`--nocautious` (Fast Execution)**:
   The agents will proceed autonomously from Plan approval directly to PR creation, stopping only when ready for your local manual testing.
 
 ---
@@ -252,34 +282,42 @@ npx mm-github-assist uninstall
 ```
 
 ### What Gets Removed (Identified by `mm_` Tags):
-* ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
-* ✅ Deletes `.vscode/mm_snippets.code-snippets`.
-* ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_dual_agent/`).
-* ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
+
+- ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
+- ✅ Deletes `.vscode/mm_snippets.code-snippets`.
+- ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_dual_agent/`).
+- ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
 
 ### What Stays Untouched:
-* 🛡️ Your source code, Git history, closed GitHub issues, and merged Pull Requests remain 100% intact and untouched.
+
+- 🛡️ Your source code, Git history, closed GitHub issues, and merged Pull Requests remain 100% intact and untouched.
 
 ---
 
 ## 12. Troubleshooting & FAQ
 
 #### Q: `gh: command not found`
-* **Fix**: Install GitHub CLI (`winget install GitHub.cli` or `brew install gh`), restart your terminal/IDE, and run `gh auth login`.
+
+- **Fix**: Install GitHub CLI (`winget install GitHub.cli` or `brew install gh`), restart your terminal/IDE, and run `gh auth login`.
 
 #### Q: `Authentication failed / Unauthorized`
-* **Fix**: Run `gh auth status`. If expired, run `gh auth refresh -h github.com -s repo` or check your `GITHUB_TOKEN` in `.env.mm_agent.local`.
+
+- **Fix**: Run `gh auth status`. If expired, run `gh auth refresh -h github.com -s repo` or check your `GITHUB_TOKEN` in `.env.mm_agent.local`.
 
 #### Q: `Git working tree is dirty / uncommitted changes`
-* **Fix**: `mm_gh_agent` will warn you before switching branches. Stash your changes with `git stash` or commit them before starting a new `MM_BUG` or `MM_FEAT`.
+
+- **Fix**: `mm_gh_agent` will warn you before switching branches. Stash your changes with `git stash` or commit them before starting a new `MM_BUG` or `MM_FEAT`.
 
 #### Q: Can I use this with private repositories?
-* **Yes!** As long as your GitHub account or PAT has access to the private repository, the suite operates identically.
+
+- **Yes!** As long as your GitHub account or PAT has access to the private repository, the suite operates identically.
 
 #### Q: How do I change the default branch from `main` to `master` or `develop`?
-* **Fix**: Configure `base_branch` in `.env.mm_agent.example` or pass `--base develop`.
+
+- **Fix**: Configure `base_branch` in `.env.mm_agent.example` or pass `--base develop`.
 
 ---
 
 ## 📄 License
+
 Released under the [MIT License](LICENSE). Built with ❤️ for the AI developer community.
