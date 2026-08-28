@@ -159,25 +159,32 @@ sequenceDiagram
     participant GH as mm_gh_agent (GitHub Assistant)
     participant Remote as GitHub.com
 
-    Dev->>VC: "MM_BUG [issue] + screenshot"
-    VC->>Dev: Root Cause + Target Files + Fix Blueprint
-    Dev->>GH: "PROCEED" (HITL Approval)
-    GH->>Remote: Creates Issue #142 (Embeds Root Cause & Blueprint)
-    GH->>GH: git checkout -b fix/142-slug
-    VC->>VC: Applies code changes & validates locally
-    VC->>GH: Ready for PR
-    GH->>Remote: git push + Opens PR #143 (Closes #142)
+    Dev->>VC: 1. "MM_BUG [issue] + screenshot" or "MM_FEAT"
+    VC->>Dev: 2. Initial Root Cause + Target Files + Fix Blueprint
+
+    rect rgb(240, 245, 255)
+        note over Dev,VC: Pre-Execution Alignment Loop (HITL)
+        Dev->>VC: Developer Feedback / File adjustments / Scope changes
+        VC->>Dev: Updated & Refined Action Plan
+    end
+
+    Dev->>GH: 3. "PROCEED" (Final HITL Approval on Aligned Plan)
+    GH->>Remote: 4. Creates Issue #142 (Embeds Final Aligned Blueprint)
+    GH->>GH: 5. git checkout -b fix/142-slug
+    VC->>VC: 6. Applies code changes & validates locally
+    VC->>GH: 7. Ready for PR
+    GH->>Remote: 8. git push + Opens PR #143 (Closes #142)
     Note over Dev,Remote: Live Local QA Testing
-    Dev->>GH: "MM_BUGFIXED #142"
-    GH->>GH: Runs sanity build check
-    GH->>Remote: Squash-merges PR #143 & closes Issue #142
-    GH->>GH: git checkout main && git pull
-    GH->>Dev: All synced & resolved!
+    Dev->>GH: 9. "MM_BUGFIXED #142"
+    GH->>GH: 10. Runs sanity build check
+    GH->>Remote: 11. Squash-merges PR #143 & closes Issue #142
+    GH->>GH: 12. git checkout main && git pull
+    GH->>Dev: 13. All synced & resolved!
 ```
 
 ### What You See on GitHub:
 
-1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Step-by-Step Blueprint.**
+1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Final Aligned Blueprint.**
 2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` is created.
 3. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
 4. **Issue / PR Comments**: Every iteration note is logged with badge `### 🤖 [mm_gh_agent for @username] · Status Update`.
@@ -222,31 +229,30 @@ Once installed, use these built-in snippets in your IDE chat or files:
 ## 8. End-to-End Walkthrough Tutorial
 
 ### Step 1: Reporting a Bug
-
 In your IDE chat, paste a screenshot or error and type:
-
 ```text
 MM_BUG The expense breakdown chart tooltip flickers and gets cut off on mobile screens.
 ```
-
 `mm_vc_agent` will inspect your components, identify the CSS / component issue, and present a **Fix Plan with Root Cause and Target Files**.
 
-### Step 2: Approving the Plan
+### Step 2: Collaborative Alignment & Refinement Loop
+You can review the plan and provide feedback:
+```text
+Also make sure to check the dark-mode tooltip styling in expense-analytics-dark.css.
+```
+`mm_vc_agent` refines the blueprint and presents the updated target files.
 
-You reply:
-
+### Step 3: Granting Final Approval
+When you are fully aligned with the blueprint, reply:
 ```text
 PROCEED
 ```
+`mm_gh_agent` creates **GitHub Issue #105** (posting the complete aligned Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
 
-`mm_gh_agent` creates **GitHub Issue #105** (posting the complete Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
-
-### Step 3: Coding & PR Creation
-
+### Step 4: Coding & PR Creation
 `mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` commits, pushes, and creates **Pull Request #106**.
 
-### Step 4: Testing & Iteration
-
+### Step 5: Live Testing & QA Iteration
 You test on your local dev server (`npm run dev`). If you notice something minor:
 
 ```text

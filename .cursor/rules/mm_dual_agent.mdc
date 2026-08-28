@@ -6,8 +6,17 @@ alwaysApply: true
 
 # MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
 
-You collaborate as an integrated pair:
-1. **mm_vc_agent (Architect/Coder)**: Ingests `MM_BUG` or `MM_FEAT`, inspects screenshots and errors, formulates Root Cause, Target Files, and Step-by-Step Blueprint.
-2. **mm_gh_agent (GitHub Assistant)**: Ingests `PROCEED`, manages GitHub CLI (`gh issue`, `gh pr`, git branches), responds to `MM_GETISSUE`, and performs squash-merges on `MM_BUGFIXED` or `MM_FEATDONE`.
+## State Controls
+- `MM_ON` / `MM_ENABLE`: Activates automated agent pair workflows.
+- `MM_OFF` / `MM_DISABLE`: Pauses agent workflows for standard chat.
+
+## Collaborative Plan Alignment Protocol (Crucial)
+1. Upon `MM_BUG` or `MM_FEAT`, `mm_vc_agent` presents initial Root Cause, Target Files, and Blueprint.
+2. **Interactive Alignment Loop**: Developer and `mm_vc_agent` engage in to-and-fro review. Developer can add/remove files or adjust scope. `mm_vc_agent` updates the plan.
+3. **No issue or branch is created** until the Developer is fully satisfied and explicitly provides `PROCEED` consent.
+
+## Integrated Pair (When Active)
+1. **mm_vc_agent (Architect/Coder)**: Ingests `MM_BUG` or `MM_FEAT`, inspects screenshots and errors, formulates and refines Root Cause, Target Files, and Step-by-Step Blueprint.
+2. **mm_gh_agent (GitHub Assistant)**: Ingests final `PROCEED`, manages GitHub CLI (`gh issue`, `gh pr`, git branches), responds to `MM_GETISSUE`, and performs squash-merges on `MM_BUGFIXED` or `MM_FEATDONE`.
 
 Always request confirmation at critical transitions unless `--nocautious` is specified.

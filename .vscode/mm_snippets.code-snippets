@@ -1,5 +1,6 @@
 {
   "MM Bug Trigger": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
     "prefix": "mmbug",
     "body": [
       "MM_BUG: ${1:Describe bug symptoms, error message, or UI defect here}"
@@ -7,6 +8,7 @@
     "description": "Trigger mm_vc_agent to analyze bug and formulate fix plan"
   },
   "MM Feature Trigger": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
     "prefix": "mmfeat",
     "body": [
       "MM_FEAT: ${1:Describe feature requirements and scope here}"
@@ -14,6 +16,7 @@
     "description": "Trigger mm_vc_agent to design feature architecture and plan"
   },
   "MM Get Active Issue": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
     "prefix": "mmgetissue",
     "body": [
       "MM_GETISSUE"
@@ -21,6 +24,7 @@
     "description": "Query mm_gh_agent for current active Issue #, PR, and branch status"
   },
   "MM Bug Fixed Sign-off": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
     "prefix": "mmfix",
     "body": [
       "MM_BUGFIXED #${1:issue_number}"
@@ -28,10 +32,27 @@
     "description": "Signal QA passed for bug fix, squash-merge PR, and sync main branch"
   },
   "MM Feature Done Sign-off": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
     "prefix": "mmdone",
     "body": [
       "MM_FEATDONE #${1:issue_number}"
     ],
     "description": "Signal QA passed for feature, squash-merge PR, and sync main branch"
+  },
+  "MM Enable Suite": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
+    "prefix": "mmon",
+    "body": [
+      "MM_ON"
+    ],
+    "description": "Activate the MM Dual-Agent Suite workflows"
+  },
+  "MM Disable Suite": {
+    "scope": "javascript,typescript,typescriptreact,javascriptreact,markdown,plaintext,json,html,css",
+    "prefix": "mmoff",
+    "body": [
+      "MM_OFF"
+    ],
+    "description": "Pause the MM Dual-Agent Suite for normal AI chat"
   }
 }
