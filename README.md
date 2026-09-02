@@ -198,11 +198,12 @@ sequenceDiagram
 | :--- | :--- | :--- | :--- |
 | **`MM_ON`** / **`MM_ENABLE`** | Suite Control | Activates the automated MM Dual-Agent pair programming and GitHub tracking. | `MM_ON` |
 | **`MM_OFF`** / **`MM_DISABLE`** | Suite Control | Pauses the MM suite for standard, unconstrained AI chat without issue/PR tracking. | `MM_OFF` |
-| **`MM_BUG [details]`** | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan. | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
-| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation. | `MM_FEAT Add export CSV button with date range filter` |
+| **`MM_BUG [details]`** | `mm_vc_agent` | (Phase 1) Ingests screenshots/logs, inspects code, presents root cause & blueprint. **Strictly Read-Only**. | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
+| **`MM_FEAT [details]`** | `mm_vc_agent` | (Phase 1) Analyzes architecture, plans target files & implementation blueprint. **Strictly Read-Only**. | `MM_FEAT Add export CSV button with date range filter` |
+| **`PROCEED`** | `mm_gh_agent` / `mm_vc_agent` | (Phase 2) Final developer approval. Creates GitHub Issue & branch, applies code edits, and opens PR for QA. | `PROCEED` |
 | **`MM_GETISSUE`** | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long. | `MM_GETISSUE` |
-| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`) |
-| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch. | `MM_FEATDONE #143` (or `MM_FEATDONE`) |
+| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | (Phase 3) Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`) |
+| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | (Phase 3) Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch. | `MM_FEATDONE #143` (or `MM_FEATDONE`) |
 | **`--cautious`** | Flag | Enforces strict confirmation at every individual transition step. | `MM_BUG --cautious Fix chart overflow` |
 | **`--nocautious`** | Flag | Fast-tracks execution, pausing only at Initial Plan and Final QA. | `MM_BUG --nocautious Fix chart overflow` |
 

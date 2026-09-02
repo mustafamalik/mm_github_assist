@@ -75,9 +75,12 @@ Co-authored-by: mm_vc_agent <agent@mm-automation.local>
 
 | Command | Target Action | Closure / Follow-up Command |
 | :--- | :--- | :--- |
-| **`MM_BUG [details]`** | Ingest bug description + screenshot, inspect root cause, formulate fix plan. | **`MM_BUGFIXED #<id>`** (or `MM_BUGFIXED`) |
-| **`MM_FEAT [details]`** | Ingest feature/enhancement spec, design architecture & file breakdown. | **`MM_FEATDONE #<id>`** (or `MM_FEATDONE`) |
+| **`MM_BUG [details]`** | (Phase 1) Ingest bug description + screenshot, inspect root cause, formulate fix plan. **Strictly Read-Only**. | **`PROCEED`** |
+| **`MM_FEAT [details]`** | (Phase 1) Ingest feature spec, design architecture & file breakdown. **Strictly Read-Only**. | **`PROCEED`** |
+| **`PROCEED`** | (Phase 2) Authorize aligned blueprint. Provision Issue & branch, apply code edits, and open PR for live QA. | **`MM_BUGFIXED`** / **`MM_FEATDONE`** |
 | **`MM_GETISSUE`** | Instantly queries and prints the currently active Issue #, PR #, active branch, and status without needing to scroll through chat history. | Returns active issue summary card & direct links |
+| **`MM_BUGFIXED #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
+| **`MM_FEATDONE #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
 
 ### 2.4 Automated IDE Keybinding & Snippet Provisioning (Zero-Touch Setup with `mm_` Tags)
 
