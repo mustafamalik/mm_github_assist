@@ -4,5 +4,11 @@
     "command": "workbench.action.quickOpen",
     "args": "mmbug",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+alt+m",
+    "command": "workbench.action.quickOpen",
+    "args": "mmbug",
+    "when": "editorTextFocus"
   }
 ]
