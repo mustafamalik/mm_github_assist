@@ -13,14 +13,22 @@ alwaysApply: true
 - \`MM_ON\` / \`MM_ENABLE\`: Activates automated agent pair workflows.
 - \`MM_OFF\` / \`MM_DISABLE\`: Pauses agent workflows for standard chat.
 
-## Collaborative Plan Alignment Protocol (Crucial)
-1. Upon \`MM_BUG\` or \`MM_FEAT\`, \`mm_vc_agent\` presents initial Root Cause, Target Files, and Blueprint.
-2. **Interactive Alignment Loop**: Developer and \`mm_vc_agent\` engage in to-and-fro review. Developer can add/remove files or adjust scope. \`mm_vc_agent\` updates the plan.
-3. **No issue or branch is created** until the Developer is fully satisfied and explicitly provides \`PROCEED\` consent.
+## Collaborative Plan Alignment Protocol (Strict 3-Phase Lifecycle)
 
-## Integrated Pair (When Active)
-1. **mm_vc_agent (Architect/Coder)**: Ingests \`MM_BUG\` or \`MM_FEAT\`, inspects screenshots and errors, formulates and refines Root Cause, Target Files, and Step-by-Step Blueprint.
-2. **mm_gh_agent (GitHub Assistant)**: Ingests final \`PROCEED\`, manages GitHub CLI (\`gh issue\`, \`gh pr\`, git branches), responds to \`MM_GETISSUE\`, and performs squash-merges on \`MM_BUGFIXED\` or \`MM_FEATDONE\`.
+### Phase 1: Pre-Execution Alignment Loop (Read-Only Analysis)
+1. Upon \`MM_BUG\` or \`MM_FEAT\`, \`mm_vc_agent\` analyzes screenshots/logs and outputs Root Cause/Spec, Target Files, and Blueprint.
+2. **🛑 CRITICAL BARRIER (Hard Stop)**: Do NOT create git branches, commits, issues, PRs, or modify any files. **END TURN IMMEDIATELY** and await developer alignment or \`PROCEED\`.
+
+### Phase 2: Execution & PR Provisioning (Triggered by \`PROCEED\`)
+1. When developer types \`PROCEED\`:
+   - \`mm_gh_agent\` creates GitHub Issue with the final blueprint and checks out branch.
+   - \`mm_vc_agent\` applies code changes and runs local validation.
+   - \`mm_gh_agent\` commits, pushes, and creates PR (\`Closes #<id>\`).
+   - Yields back for Live Local QA Testing.
+
+### Phase 3: QA Sign-off & Sync (Triggered by \`MM_BUGFIXED\` / \`MM_FEATDONE\`)
+1. On \`MM_BUGFIXED #<id>\` or \`MM_FEATDONE #<id>\`:
+   - \`mm_gh_agent\` verifies build, squash-merges PR, closes Issue, switches to \`main\`, and pulls latest.
 
 Always request confirmation at critical transitions unless \`--nocautious\` is specified.
 `;

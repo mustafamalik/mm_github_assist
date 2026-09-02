@@ -6,11 +6,12 @@ const WINDSURF_SECTION = `
 # MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
 - \`MM_ON\` / \`MM_ENABLE\`: Activate MM automated workflow.
 - \`MM_OFF\` / \`MM_DISABLE\`: Pause MM automated workflow for standard chat.
-- \`MM_BUG [details]\`: Start bug triage, root cause analysis, and plan.
-- \`MM_FEAT [details]\`: Start feature design, file architecture, and plan.
+- \`MM_BUG [details]\`: (Phase 1) Ingest bug details, analyze root cause, list target files & plan. STRICTLY READ-ONLY: Do not modify files or create branches/issues. Yield turn for developer alignment.
+- \`MM_FEAT [details]\`: (Phase 1) Ingest feature spec, plan architecture & target files. STRICTLY READ-ONLY: Do not modify files or create branches/issues. Yield turn for developer alignment.
+- \`PROCEED\`: (Phase 2) Developer approval. mm_gh_agent creates Issue & branch; mm_vc_agent applies edits; mm_gh_agent opens PR for QA.
 - \`MM_GETISSUE\`: Retrieve active GitHub issue, PR URL, and branch context.
-- \`MM_BUGFIXED #<id>\`: Pre-merge build verification, squash-merge PR, and sync main branch.
-- \`MM_FEATDONE #<id>\`: Pre-merge build verification, squash-merge PR, and sync main branch.
+- \`MM_BUGFIXED #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
+- \`MM_FEATDONE #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
 <!-- MM_RULES_END -->
 `;
 

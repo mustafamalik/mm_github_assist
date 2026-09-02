@@ -75,9 +75,12 @@ Co-authored-by: mm_vc_agent <agent@mm-automation.local>
 
 | Command | Target Action | Closure / Follow-up Command |
 | :--- | :--- | :--- |
-| **`MM_BUG [details]`** | Ingest bug description + screenshot, inspect root cause, formulate fix plan. | **`MM_BUGFIXED #<id>`** (or `MM_BUGFIXED`) |
-| **`MM_FEAT [details]`** | Ingest feature/enhancement spec, design architecture & file breakdown. | **`MM_FEATDONE #<id>`** (or `MM_FEATDONE`) |
+| **`MM_BUG [details]`** | (Phase 1) Ingest bug description + screenshot, inspect root cause, formulate fix plan. **Strictly Read-Only**. | **`PROCEED`** |
+| **`MM_FEAT [details]`** | (Phase 1) Ingest feature spec, design architecture & file breakdown. **Strictly Read-Only**. | **`PROCEED`** |
+| **`PROCEED`** | (Phase 2) Authorize aligned blueprint. Provision Issue & branch, apply code edits, and open PR for live QA. | **`MM_BUGFIXED`** / **`MM_FEATDONE`** |
 | **`MM_GETISSUE`** | Instantly queries and prints the currently active Issue #, PR #, active branch, and status without needing to scroll through chat history. | Returns active issue summary card & direct links |
+| **`MM_BUGFIXED #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
+| **`MM_FEATDONE #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
 
 ### 2.4 Automated IDE Keybinding & Snippet Provisioning (Zero-Touch Setup with `mm_` Tags)
 
@@ -160,7 +163,7 @@ flowchart TD
     end
 
     subgraph Generated Configs [Target Directory Output with mm_ Namespace]
-        AGY_DIR[".agents/skills/mm_dual_agent/ + .gemini/"]
+        AGY_DIR[".agents/skills/mm_github_assist/ + .gemini/"]
         CUR_DIR[".cursor/rules/mm_dual_agent.mdc"]
         CLD_DIR["CLAUDE.md + .claude/skills/mm_ops/"]
         VSC_DIR[".github/copilot-instructions.md + .vscode/mm_snippets.code-snippets"]
@@ -285,7 +288,7 @@ mm-dual-agent/
 ├── bin/
 │   └── mm-agent.js                # CLI entry point (init & uninstall)
 ├── adapters/
-│   ├── antigravity.js             # Generates & cleans .agents/skills/mm_dual_agent/
+│   ├── antigravity.js             # Generates & cleans .agents/skills/mm_github_assist/
 │   ├── cursor.js                  # Generates & cleans .cursor/rules/mm_dual_agent.mdc
 │   ├── claude.js                  # Generates & cleans CLAUDE.md and .claude/skills/mm_ops/
 │   ├── vscode.js                  # Injects & surgically removes .vscode/mm_snippets.code-snippets
@@ -303,7 +306,7 @@ Every installed artifact is systematically prefixed and tagged with `mm_` to gua
 ```mermaid
 flowchart TD
     UninstallCmd["npx mm-dual-agent uninstall"] --> Detection["Scans for `mm_` Namespaces & Block Tags"]
-    Detection --> FileClean["1. Removes `.agents/skills/mm_dual_agent/` & `.agents/agents/mm_*.json`"]
+    Detection --> FileClean["1. Removes `.agents/skills/mm_github_assist/` & `.agents/agents/mm_*.json`"]
     Detection --> CursorClean["2. Removes `.cursor/rules/mm_*.mdc`"]
     Detection --> SnippetClean["3. Deletes `.vscode/mm_snippets.code-snippets`"]
     Detection --> KeybindingClean["4. Strips only block: `/* MM_KEYBINDINGS_START */ ... /* MM_KEYBINDINGS_END */`"]
@@ -314,7 +317,7 @@ flowchart TD
 #### Complete Namespace Mapping Table:
 | Component | Installation Path with `mm_` Tag | Teardown Action |
 | :--- | :--- | :--- |
-| **Antigravity Skills** | `.agents/skills/mm_dual_agent/` | Deleted directory |
+| **Antigravity Skills** | `.agents/skills/mm_github_assist/` | Deleted directory |
 | **Antigravity Agents** | `.agents/agents/mm_vc_agent.json`, `mm_gh_agent.json` | Deleted files |
 | **Cursor Rules** | `.cursor/rules/mm_dual_agent.mdc` | Deleted file |
 | **Claude Skills** | `.claude/skills/mm_github_ops/` | Deleted directory |
@@ -586,7 +589,7 @@ npx mm-dual-agent uninstall
 ### What Gets Removed (Identified by `mm_` Tags):
 * ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
 * ✅ Deletes `.vscode/mm_snippets.code-snippets`.
-* ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_dual_agent/`).
+* ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_github_assist/`).
 * ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
 
 ### What Stays Untouched:
