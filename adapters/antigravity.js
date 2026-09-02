@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SKILL_MD_CONTENT = `---
-name: mm_dual_agent
+name: mm_github_assist
 description: Autonomous pair-programming & GitHub assistant (mm_vc_agent & mm_gh_agent) for bugs, features, issue tracking, and PR lifecycle management.
 ---
 
@@ -61,7 +61,7 @@ When the user types \`MM_BUG\`, \`MM_FEAT\`, \`PROCEED\`, \`MM_GETISSUE\`, \`MM_
 
 module.exports = {
   install(projectDir) {
-    const skillDir = path.join(projectDir, '.agents', 'skills', 'mm_dual_agent');
+    const skillDir = path.join(projectDir, '.agents', 'skills', 'mm_github_assist');
     fs.mkdirSync(skillDir, { recursive: true });
     fs.writeFileSync(path.join(skillDir, 'SKILL.md'), SKILL_MD_CONTENT, 'utf8');
 
@@ -80,7 +80,7 @@ module.exports = {
   },
 
   uninstall(projectDir) {
-    const skillDir = path.join(projectDir, '.agents', 'skills', 'mm_dual_agent');
+    const skillDir = path.join(projectDir, '.agents', 'skills', 'mm_github_assist');
     if (fs.existsSync(skillDir)) {
       fs.rmSync(skillDir, { recursive: true, force: true });
     }

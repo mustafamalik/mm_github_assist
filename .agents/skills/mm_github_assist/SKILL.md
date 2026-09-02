@@ -1,5 +1,5 @@
 ---
-name: mm_dual_agent
+name: mm_github_assist
 description: Autonomous pair-programming & GitHub assistant (mm_vc_agent & mm_gh_agent) for bugs, features, issue tracking, and PR lifecycle management.
 ---
 

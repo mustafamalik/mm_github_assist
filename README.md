@@ -318,7 +318,7 @@ npx mm-github-assist uninstall
 
 - ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
 - ✅ Deletes `.vscode/mm_snippets.code-snippets`.
-- ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_dual_agent/`).
+- ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_github_assist/`).
 - ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
 
 ### What Stays Untouched:
