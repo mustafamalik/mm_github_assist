@@ -1,6 +1,6 @@
 {
   "name": "mm_github_assist",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Autonomous AI Pair Programming & GitHub Assistant for Vibe Coding (mm_vc_agent & mm_gh_agent)",
   "main": "bin/mm-assist.js",
   "bin": {
