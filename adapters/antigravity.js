@@ -61,6 +61,15 @@ When the user types \`MM_BUG\`, \`MM_FEAT\`, \`PROCEED\`, \`MM_GETISSUE\`, \`MM_
 
 module.exports = {
   install(projectDir) {
+    // 1. Clean up legacy skill directory if it exists from previous installations
+    const legacySkillDir = path.join(projectDir, '.agents', 'skills', 'mm_dual_agent');
+    if (fs.existsSync(legacySkillDir)) {
+      try {
+        fs.rmSync(legacySkillDir, { recursive: true, force: true });
+      } catch (e) {}
+    }
+
+    // 2. Install mm_github_assist skill
     const skillDir = path.join(projectDir, '.agents', 'skills', 'mm_github_assist');
     fs.mkdirSync(skillDir, { recursive: true });
     fs.writeFileSync(path.join(skillDir, 'SKILL.md'), SKILL_MD_CONTENT, 'utf8');
