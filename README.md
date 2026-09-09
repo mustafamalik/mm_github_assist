@@ -184,11 +184,12 @@ sequenceDiagram
 
 ### What You See on GitHub:
 
-1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Final Aligned Blueprint.**
-2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` is created.
-3. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
-4. **Issue / PR Comments**: Every iteration note is logged with badge `### 🤖 [mm_gh_agent for @username] · Status Update`.
-5. **Clean Merges**: On sign-off, PR is squash-merged, remote branch is deleted, and your local workspace is updated.
+1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>` or `[FEAT] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Final Aligned Blueprint.**
+2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` (or `feat/...`) is created.
+3. **Structured Multi-Line Commits**: Every commit includes a descriptive subject line, an explanatory bulleted summary of changes in the body, and co-authorship attribution. Single-line commits without detail are strictly avoided.
+4. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
+5. **PR / Issue Iteration Comments**: Every review/QA iteration commit automatically posts a status update comment to the PR timeline detailing the commit hash, operator handle, and a breakdown of exact changes made in that commit.
+6. **Clean Merges**: On sign-off, PR is squash-merged, remote branch is deleted, and your local workspace is updated.
 
 ---
 
@@ -251,7 +252,16 @@ PROCEED
 `mm_gh_agent` creates **GitHub Issue #105** (posting the complete aligned Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
 
 ### Step 4: Coding & PR Creation
-`mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` commits, pushes, and creates **Pull Request #106**.
+`mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` creates a structured multi-line commit with a descriptive subject and a bulleted summary of changes, pushes to remote, and creates **Pull Request #106**.
+
+```bash
+# Example of commit created automatically by mm_gh_agent:
+git commit -m "fix(#105): resolve chart tooltip clipping on mobile screens" \
+  -m "- Adjusted boundary detection logic to dynamically calculate right/bottom margins
+- Added responsive CSS overflow overrides for screens < 640px
+- Verified layout across standard and dark theme modes" \
+  -m "Co-authored-by: mm_vc_agent <agent@mm-automation.local>"
+```
 
 ### Step 5: Live Testing & QA Iteration
 You test on your local dev server (`npm run dev`). If you notice something minor:
@@ -260,7 +270,16 @@ You test on your local dev server (`npm run dev`). If you notice something minor
 The tooltip looks great, but let's make the background slightly darker.
 ```
 
-`mm_vc_agent` adjusts the color, and `mm_gh_agent` pushes an update commit.
+`mm_vc_agent` adjusts the color, and `mm_gh_agent` commits with an iteration summary, pushes to remote, and automatically posts an **Iteration Status Update comment** to the PR conversation:
+
+```markdown
+### 🤖 [mm_gh_agent for @mustafamalik] · Status Update
+* **Iteration:** #2
+* **Commit:** [`7d3d57b`](https://github.com/.../commit/7d3d57b)
+* **Summary of Changes:**
+  - Darkened tooltip background opacity to 0.95 for higher contrast
+* **Status:** Awaiting User Validation
+```
 
 ### Step 5: Getting Context in Long Chats
 
