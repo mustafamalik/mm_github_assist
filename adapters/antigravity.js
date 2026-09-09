@@ -35,7 +35,9 @@ When the user types \`MM_BUG\`, \`MM_FEAT\`, \`PROCEED\`, \`MM_GETISSUE\`, \`MM_
    - \`mm_gh_agent\` creates the official GitHub Issue embedding the final aligned blueprint.
    - \`mm_gh_agent\` creates and checks out the branch \`fix/<issue-id>-<operator>-<slug>\` (or \`feat/...\`).
    - \`mm_vc_agent\` implements the code modifications and executes local validation/tests.
-   - \`mm_gh_agent\` commits, pushes, and opens a Pull Request (\`Closes #<issue-id>\`).
+   - \`mm_gh_agent\` stages and commits using a multi-line format (descriptive title + bulleted body summary of changes + co-authorship trailer). *Single-line commits without detail are strictly prohibited.*
+   - \`mm_gh_agent\` pushes and opens a Pull Request (\`Closes #<issue-id>\`).
+   - For subsequent iteration commits on the PR, \`mm_gh_agent\` includes bulleted change summaries in the commit body and posts an iteration update comment to the PR.
    - Yields back to the developer for **Live Local QA Testing**.
 
 ### Phase 3: QA Sign-off & Sync (Triggered by \`MM_BUGFIXED\` / \`MM_FEATDONE\`)

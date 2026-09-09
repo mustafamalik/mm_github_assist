@@ -73,11 +73,33 @@ Detect the human operator from `git config user.name` / `gh api user`. All GitHu
    💡 *Use `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>` to finalize and merge.*
    ```
 
-### B. Pull Request Creation
-1. Stage modified files and commit: `git commit -m "<type>(#<id>): <summary>\n\nCo-authored-by: mm_vc_agent <agent@mm-automation.local>"`.
-2. Push branch: `git push -u origin <branch-name>`.
-3. Open PR: `gh pr create --title "[<TYPE>] <Summary>" --body "Closes #<id>\n\n..."`.
-4. Output PR link and prompt user for live testing.
+### B. Pull Request Creation & Iteration Tracking
+1. **Multi-line Commit Standard**:
+   Every commit created by `mm_gh_agent` MUST include a descriptive title AND a bulleted summary in the commit body:
+   ```bash
+   git commit -m "<type>(#<id>): <summary>" -m "- <detail 1: what changed and why>\n- <detail 2: specific files/logic touched>" -m "Co-authored-by: mm_vc_agent <agent@mm-automation.local>"
+   ```
+   *Never make commits with only a single-line title or vague description.*
+2. Stage modified files and commit with the structured format above.
+3. Push branch: `git push -u origin <branch-name>`.
+4. Open PR: `gh pr create --title "[<TYPE>] <Summary>" --body "Closes #<id>\n\n..."`.
+5. **Iteration Commit Updates**:
+   When subsequent commits are pushed to an open PR during review/QA:
+   - Commit using the multi-line commit standard with bulleted changes for that specific iteration.
+   - Push to remote: `git push`.
+   - Post an iteration progress comment on the PR via `gh pr comment`:
+     ```bash
+     gh pr comment --body "$(cat << 'EOF'
+     ### 🤖 [mm_gh_agent for @<username>] · Status Update
+     * **Iteration:** #<N>
+     * **Commit:** [\`<hash>\`](<commit-url>)
+     * **Summary of Changes:**
+       - <bulleted details of what was done in this commit>
+     * **Status:** Awaiting User Validation
+     EOF
+     )"
+     ```
+6. Output PR link and prompt user for live testing.
 
 ### C. Active Context Query (`MM_GETISSUE`)
 When the developer types `MM_GETISSUE`:
