@@ -23,7 +23,8 @@ alwaysApply: true
 1. When developer types \`PROCEED\`:
    - \`mm_gh_agent\` creates GitHub Issue with the final blueprint and checks out branch.
    - \`mm_vc_agent\` applies code changes and runs local validation.
-   - \`mm_gh_agent\` commits, pushes, and creates PR (\`Closes #<id>\`).
+   - \`mm_gh_agent\` commits with multi-line message (subject + bulleted change details + co-author), pushes, and creates PR (\`Closes #<id>\`).
+   - For review iterations, \`mm_gh_agent\` writes detailed commit summaries and logs PR status comments.
    - Yields back for Live Local QA Testing.
 
 ### Phase 3: QA Sign-off & Sync (Triggered by \`MM_BUGFIXED\` / \`MM_FEATDONE\`)
