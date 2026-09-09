@@ -8,12 +8,14 @@ description: Autonomous pair-programming & GitHub assistant (mm_vc_agent & mm_gh
 When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`, `MM_FEATDONE`, `MM_ON`, or `MM_OFF`, follow the dual-agent lifecycle:
 
 ## 1. Suite State Controls
+
 - `MM_ON` / `MM_ENABLE`: Activates the MM agent workflow.
 - `MM_OFF` / `MM_DISABLE`: Pauses the MM agent workflow, returning to standard unconstrained AI chat.
 
 ## 2. Collaborative Plan Alignment Protocol (Strict 3-Phase Lifecycle)
 
 ### Phase 1: Pre-Execution Alignment Loop (Read-Only Analysis)
+
 1. Upon `MM_BUG [details]` or `MM_FEAT [details]`:
    - `mm_vc_agent` analyzes screenshots, logs, and inspects repository files in **READ-ONLY** mode.
    - Outputs:
@@ -28,25 +30,30 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
 3. **Interactive Refinement**: If the developer suggests file changes or scope adjustments, update the plan and yield back again.
 
 ### Phase 2: Execution & PR Provisioning (Triggered by `PROCEED`)
+
 1. Only when the developer explicitly types `PROCEED` (or gives explicit approval to proceed):
    - `mm_gh_agent` creates the official GitHub Issue embedding the final aligned blueprint.
    - `mm_gh_agent` creates and checks out the branch `fix/<issue-id>-<operator>-<slug>` (or `feat/...`).
    - `mm_vc_agent` implements the code modifications and executes local validation/tests.
-   - `mm_gh_agent` stages and commits with a structured multi-line message (subject line + bulleted summary of changes in the body + co-authorship trailer). *Single-line commits without detail are strictly prohibited.*
+   - `mm_gh_agent` stages and commits with a structured multi-line message (subject line + bulleted summary of changes in the body + co-authorship trailer). _Single-line commits without detail are strictly prohibited._
    - `mm_gh_agent` pushes and opens a Pull Request (`Closes #<issue-id>`).
    - For all subsequent commits pushed during review/QA, `mm_gh_agent` writes bulleted change summaries in the commit body and posts an iteration update comment directly to the PR.
    - Yields back to the developer for **Live Local QA Testing**.
+2. **DO NOT** proceed to 'Phase 3' without getting confirmation from the developer.
 
 ### Phase 3: QA Sign-off & Sync (Triggered by `MM_BUGFIXED` / `MM_FEATDONE`)
+
 1. When developer types `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
    - `mm_gh_agent` runs pre-merge sanity checks.
    - `mm_gh_agent` squash-merges the PR, closes the Issue, deletes the remote branch, switches to default branch (`main`), and executes `git pull`.
 
 ## 3. Roles & Identities (When Active)
+
 - **mm_vc_agent**: Analyzes screenshots/logs, identifies root causes, architects solutions, negotiates plans, applies code changes, and runs local linters.
 - **mm_gh_agent**: Handles GitHub CLI operations (`gh issue`, `gh pr`, `git checkout -b`), logs iteration notes with developer attribution, and squash-merges on completion.
 
 ## 4. Command Trigger Matrix
+
 - `MM_BUG [details]`: Formulate Root Cause, Target Files, and Blueprint. **(READ-ONLY -> STOP TURN)**.
 - `MM_FEAT [details]`: Formulate Architectural Spec, Target Files, and Blueprint. **(READ-ONLY -> STOP TURN)**.
 - `PROCEED`: Developer approval to create Issue, checkout branch, apply edits, and open PR.
@@ -55,4 +62,5 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
 - `MM_FEATDONE #<id>`: Run pre-merge check, squash-merge PR, close issue, checkout base branch, and git pull.
 
 ## 5. Governance
+
 - Default to `--cautious` mode: Ask for explicit user confirmation before creating issues, editing code, or merging.
