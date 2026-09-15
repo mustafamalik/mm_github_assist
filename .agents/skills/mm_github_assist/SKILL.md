@@ -39,7 +39,7 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
    - `mm_gh_agent` stages and commits using a structured multi-line format (descriptive title + summary of changes). _Single-line commits without detail are strictly prohibited._
    - `mm_gh_agent` pushes and opens a Pull Request (`Closes #<issue-id>`).
      - **PR Title Prefix Convention and Label Convention:** MUST prefix with `Bug: ` for bug fixes or `Feat: ` for feature enhancements. Add label `bug` for bug fixes and `enhancement` for feature enhancements.
-   - For any subsequent commits pushed during review/QA, `mm_gh_agent` includes commit body summaries and posts an iteration update comment directly to the PR.
+   - For any subsequent commits pushed during review/QA, `mm_gh_agent` includes commit body summaries.
    - Yields back to the developer for **Live Local QA Testing**.
 2. **DO NOT** proceed to 'Phase 3' without getting **confirmation** from the developer.
 
