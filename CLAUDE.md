@@ -6,4 +6,6 @@
 - `MM_GETISSUE`: Retrieve active GitHub issue, PR URL, and branch context.
 - `MM_BUGFIXED #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
 - `MM_FEATDONE #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
+- `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, and release candidate PR.
+- `MM_RELEASEDONE`: Squash-merge release PR, tag version, and publish GitHub Release.
 <!-- MM_DUAL_AGENT_END -->

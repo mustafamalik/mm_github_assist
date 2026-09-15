@@ -27,7 +27,6 @@ function printBanner() {
   console.log('\n======================================================');
   console.log('  🚀 MM GitHub Assist Suite (mm_vc_agent & mm_gh_agent)');
   console.log('  Autonomous AI Pair-Programming & GitHub Assistant');
-  console.log('  Crafted by Mustafa Malik (MM)');
   console.log('======================================================\n');
 }
 
@@ -98,7 +97,9 @@ function runInit(targetDir) {
   console.log('  • MM_GETISSUE          ➔ Check active issue # and PR link');
   console.log('  • MM_BUGFIXED #<id>    ➔ Verify & squash-merge bug PR');
   console.log('  • MM_FEATDONE #<id>    ➔ Verify & squash-merge feature PR');
-  console.log('\n✨ Snippets: Type "mmbug", "mmfeat", "mmgetissue", "mmfix", "mmdone" + Tab in your editor.\n');
+  console.log('  • MM_RELEASE <version> ➔ Pre-release gate & release candidate PR');
+  console.log('  • MM_RELEASEDONE       ➔ Tag version & publish GitHub Release');
+  console.log('\n✨ Snippets: Type "mmbug", "mmfeat", "mmgetissue", "mmfix", "mmdone", "mmrelease", "mmreleasedone" + Tab in your editor.\n');
 }
 
 function runUninstall(targetDir) {

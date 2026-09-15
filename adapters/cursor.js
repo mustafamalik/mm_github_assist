@@ -31,6 +31,10 @@ alwaysApply: true
 1. On \`MM_BUGFIXED #<id>\` or \`MM_FEATDONE #<id>\`:
    - \`mm_gh_agent\` verifies build, squash-merges PR, closes Issue, switches to \`main\`, and pulls latest.
 
+## Release Lifecycle Protocol (MM_RELEASE)
+- \`MM_RELEASE <version>\`: Pre-release gate, collision check, code-freeze branch, and release candidate PR.
+- \`MM_RELEASEDONE\`: Squash-merge release PR, tag version on \`main\`, and publish GitHub Release.
+
 Always request confirmation at critical transitions unless \`--nocautious\` is specified.
 `;
 

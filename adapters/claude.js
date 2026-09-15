@@ -12,6 +12,8 @@ const CLAUDE_MD_SECTION = `
 - \`MM_GETISSUE\`: Retrieve active GitHub issue, PR URL, and branch context.
 - \`MM_BUGFIXED #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
 - \`MM_FEATDONE #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
+- \`MM_RELEASE <version>\`: (Release Phase 1 & 2) Pre-release gate, collision check, code-freeze branch, and release candidate PR.
+- \`MM_RELEASEDONE\`: (Release Phase 3) Squash-merge release PR, tag version, and publish GitHub Release.
 <!-- MM_DUAL_AGENT_END -->
 `;
 
