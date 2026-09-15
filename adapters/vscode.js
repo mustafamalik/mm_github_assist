@@ -1,80 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
-const SNIPPETS = {
-  "MM Bug Trigger": {
-    "prefix": "mmbug",
-    "body": [
-      "MM_BUG: ${1:Describe bug symptoms, error message, or UI defect here}"
-    ],
-    "description": "Trigger mm_vc_agent to analyze bug and formulate fix plan"
-  },
-  "MM Feature Trigger": {
-    "prefix": "mmfeat",
-    "body": [
-      "MM_FEAT: ${1:Describe feature requirements and scope here}"
-    ],
-    "description": "Trigger mm_vc_agent to design feature architecture and plan"
-  },
-  "MM Get Active Issue": {
-    "prefix": "mmgetissue",
-    "body": [
-      "MM_GETISSUE"
-    ],
-    "description": "Query mm_gh_agent for current active Issue #, PR, and branch status"
-  },
-  "MM Bug Fixed Sign-off": {
-    "prefix": "mmfix",
-    "body": [
-      "MM_BUGFIXED #${1:issue_number}"
-    ],
-    "description": "Signal QA passed for bug fix, squash-merge PR, and sync main branch"
-  },
-  "MM Feature Done Sign-off": {
-    "prefix": "mmdone",
-    "body": [
-      "MM_FEATDONE #${1:issue_number}"
-    ],
-    "description": "Signal QA passed for feature, squash-merge PR, and sync main branch"
-  },
-  "MM Enable Suite": {
-    "prefix": "mmon",
-    "body": [
-      "MM_ON"
-    ],
-    "description": "Activate the MM Dual-Agent Suite workflows"
-  },
-  "MM Disable Suite": {
-    "prefix": "mmoff",
-    "body": [
-      "MM_OFF"
-    ],
-    "description": "Pause the MM Dual-Agent Suite for normal AI chat"
-  },
-  "MM Release Trigger": {
-    "prefix": "mmrelease",
-    "body": [
-      "MM_RELEASE ${1:version}"
-    ],
-    "description": "Trigger mm_gh_agent to run pre-release gate, collision check, and open release candidate PR"
-  },
-  "MM Release Done Sign-off": {
-    "prefix": "mmreleasedone",
-    "body": [
-      "MM_RELEASEDONE"
-    ],
-    "description": "Signal QA passed for release, squash-merge PR, tag version, and publish GitHub Release"
-  }
-};
+const CANONICAL_SNIPPETS = path.join(__dirname, '..', '.vscode', 'mm_snippets.code-snippets');
 
 module.exports = {
   install(projectDir) {
     const vscodeDir = path.join(projectDir, '.vscode');
     fs.mkdirSync(vscodeDir, { recursive: true });
 
-    // 1. Snippets injection
+    // 1. Snippets injection from canonical source
     const snippetFile = path.join(vscodeDir, 'mm_snippets.code-snippets');
-    fs.writeFileSync(snippetFile, JSON.stringify(SNIPPETS, null, 2), 'utf8');
+    if (fs.existsSync(CANONICAL_SNIPPETS)) {
+      fs.copyFileSync(CANONICAL_SNIPPETS, snippetFile);
+    }
 
     // 2. Keybindings injection with surgical comments if exists
     const keybindingsFile = path.join(vscodeDir, 'keybindings.json');

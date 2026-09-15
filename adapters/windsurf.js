@@ -1,29 +1,33 @@
 const fs = require('fs');
 const path = require('path');
 
-const WINDSURF_SECTION = `
-<!-- MM_RULES_START -->
-# MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
-- \`MM_ON\` / \`MM_ENABLE\`: Activate MM automated workflow.
-- \`MM_OFF\` / \`MM_DISABLE\`: Pause MM automated workflow for standard chat.
-- \`MM_BUG [details]\`: (Phase 1) Ingest bug details, analyze root cause, list target files & plan. STRICTLY READ-ONLY: Do not modify files or create branches/issues. Yield turn for developer alignment.
-- \`MM_FEAT [details]\`: (Phase 1) Ingest feature spec, plan architecture & target files. STRICTLY READ-ONLY: Do not modify files or create branches/issues. Yield turn for developer alignment.
-- \`PROCEED\`: (Phase 2) Developer approval. mm_gh_agent creates Issue & branch; mm_vc_agent applies edits; mm_gh_agent commits with detailed bulleted summaries, pushes, and opens PR for QA. Iteration commits must log progress comments on PR.
-- \`MM_GETISSUE\`: Retrieve active GitHub issue, PR URL, and branch context.
-- \`MM_BUGFIXED #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
-- \`MM_FEATDONE #<id>\`: (Phase 3) Pre-merge build verification, squash-merge PR, and sync main branch.
-- \`MM_RELEASE <version>\`: (Release Phase 1 & 2) Pre-release gate, collision check, code-freeze branch, and release candidate PR.
-- \`MM_RELEASEDONE\`: (Release Phase 3) Squash-merge release PR, tag version, and publish GitHub Release.
-<!-- MM_RULES_END -->
-`;
+const CANONICAL_WINDSURF_RULES = path.join(__dirname, '..', '.windsurfrules');
+
+function getWindsurfSection() {
+  if (fs.existsSync(CANONICAL_WINDSURF_RULES)) {
+    return fs.readFileSync(CANONICAL_WINDSURF_RULES, 'utf8').trim();
+  }
+  return '';
+}
 
 module.exports = {
   install(projectDir) {
     const rulesFile = path.join(projectDir, '.windsurfrules');
     let content = fs.existsSync(rulesFile) ? fs.readFileSync(rulesFile, 'utf8') : '';
-    if (!content.includes('MM_RULES_START')) {
-      content += '\n' + WINDSURF_SECTION.trim() + '\n';
-      fs.writeFileSync(rulesFile, content, 'utf8');
+    const section = getWindsurfSection();
+    const startTag = '<!-- MM_RULES_START -->';
+    const endTag = '<!-- MM_RULES_END -->';
+
+    if (section) {
+      if (content.includes(startTag) && content.includes(endTag)) {
+        const startIndex = content.indexOf(startTag);
+        const endIndex = content.indexOf(endTag) + endTag.length;
+        content = content.slice(0, startIndex) + section + content.slice(endIndex);
+        fs.writeFileSync(rulesFile, content, 'utf8');
+      } else {
+        content = content ? content.trim() + '\n\n' + section + '\n' : section + '\n';
+        fs.writeFileSync(rulesFile, content, 'utf8');
+      }
     }
   },
 
