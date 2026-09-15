@@ -1,7 +1,7 @@
 # 🚀 MM GitHub Assist (`mm_github_assist`)
 
 > **Autonomous AI Pair Programming & GitHub Assistant for Vibe Coding**  
-> _version 1.0.4_
+> _version 1.0.5_
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Compatible With](https://img.shields.io/badge/IDE-Antigravity%20%7C%20Cursor%20%7C%20Claude%20%7C%20VS%20Code%20%7C%20Windsurf-orange)]()
