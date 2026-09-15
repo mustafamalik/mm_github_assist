@@ -47,5 +47,19 @@
       "MM_OFF"
     ],
     "description": "Pause the MM Dual-Agent Suite for normal AI chat"
+  },
+  "MM Release Trigger": {
+    "prefix": "mmrelease",
+    "body": [
+      "MM_RELEASE ${1:version}"
+    ],
+    "description": "Trigger mm_gh_agent to run pre-release gate, collision check, and open release candidate PR"
+  },
+  "MM Release Done Sign-off": {
+    "prefix": "mmreleasedone",
+    "body": [
+      "MM_RELEASEDONE"
+    ],
+    "description": "Signal QA passed for release, squash-merge PR, tag version, and publish GitHub Release"
   }
 }
