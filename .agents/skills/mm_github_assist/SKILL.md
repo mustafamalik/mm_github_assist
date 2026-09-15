@@ -36,8 +36,10 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
      - **Title Prefix Convention:** MUST prefix with `Bug: ` for bugs (`MM_BUG`) or `Feat: ` for features (`MM_FEAT`).
    - `mm_gh_agent` creates and checks out the branch `fix/<issue-id>-<operator>-<slug>` (or `feat/...`).
    - `mm_vc_agent` implements the code modifications and executes local validation/tests.
-   - `mm_gh_agent` For all subsequent commits pushed during review/QA, writes change summaries in the commit body and posts an iteration update comment directly to the PR. stages and commits using a structured format (descriptive title + summary of changes). _Single-line commits without detail are strictly prohibited._
+   - `mm_gh_agent` stages and commits using a structured format (descriptive title + summary of changes). _Single-line commits without detail are strictly prohibited._
    - `mm_gh_agent` pushes and opens a Pull Request (`Closes #<issue-id>`).
+     - **PR Title Prefix Convention and Label Convention:** MUST prefix with `Bug: ` for bug fixes or `Feat: ` for feature enhancements. Add label `bug` for bug fixes and `enhancement` for feature enhancements.
+   - For all subsequent commits pushed during review/QA, `mm_gh_agent` writes change summaries in the commit body and posts an iteration update comment directly to the PR. _Single-line commits without detail are strictly prohibited._
    - Yields back to the developer for **Live Local QA Testing**.
 2. **DO NOT** proceed to 'Phase 3' without getting **confirmation** from the developer.
 
@@ -45,6 +47,7 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
 
 1. When developer types `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
    - `mm_gh_agent` runs pre-merge sanity checks.
+   - `mm_gh_agent` reviews all commits on the PR and posts a comprehensive final summary comment to the PR documenting the accumulated fixes and review revisions.
    - `mm_gh_agent` squash-merges the PR, closes the Issue, deletes the remote branch, switches to default branch (`main`), and executes `git pull`.
 
 ## 3. Roles & Identities (When Active)
