@@ -21,7 +21,7 @@ const ADAPTERS = {
 };
 
 const args = process.argv.slice(2);
-const command = args[0] || 'help';
+const command = args[0] || 'init';
 
 function printBanner() {
   console.log('\n======================================================');
