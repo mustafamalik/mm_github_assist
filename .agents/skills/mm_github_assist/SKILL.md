@@ -33,13 +33,13 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
 
 1. Only when the developer explicitly types `PROCEED` (or gives explicit approval to proceed):
    - `mm_gh_agent` creates the official GitHub Issue embedding the final aligned blueprint.
+     - **Title Prefix Convention:** MUST prefix with `Bug: ` for bugs (`MM_BUG`) or `Feat: ` for features (`MM_FEAT`).
    - `mm_gh_agent` creates and checks out the branch `fix/<issue-id>-<operator>-<slug>` (or `feat/...`).
    - `mm_vc_agent` implements the code modifications and executes local validation/tests.
-   - `mm_gh_agent` stages and commits with a structured multi-line message (subject line + bulleted summary of changes in the body + co-authorship trailer). _Single-line commits without detail are strictly prohibited._
+   - `mm_gh_agent` For all subsequent commits pushed during review/QA, writes change summaries in the commit body and posts an iteration update comment directly to the PR. stages and commits using a structured format (descriptive title + summary of changes). _Single-line commits without detail are strictly prohibited._
    - `mm_gh_agent` pushes and opens a Pull Request (`Closes #<issue-id>`).
-   - For all subsequent commits pushed during review/QA, `mm_gh_agent` writes bulleted change summaries in the commit body and posts an iteration update comment directly to the PR.
    - Yields back to the developer for **Live Local QA Testing**.
-2. **DO NOT** proceed to 'Phase 3' without getting confirmation from the developer.
+2. **DO NOT** proceed to 'Phase 3' without getting **confirmation** from the developer.
 
 ### Phase 3: QA Sign-off & Sync (Triggered by `MM_BUGFIXED` / `MM_FEATDONE`)
 
