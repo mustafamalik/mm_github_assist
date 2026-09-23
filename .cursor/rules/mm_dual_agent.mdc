@@ -7,28 +7,23 @@ alwaysApply: true
 # MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
 
 ## State Controls
-- `MM_ON` / `MM_ENABLE`: Activates automated agent pair workflows.
-- `MM_OFF` / `MM_DISABLE`: Pauses agent workflows for standard chat.
+- `MM_ON`/`MM_ENABLE`: activate agent pair workflow.
+- `MM_OFF`/`MM_DISABLE`: pause workflow, standard chat.
 
-## Collaborative Plan Alignment Protocol (Strict 3-Phase Lifecycle)
+## Plan Alignment & Execution (3-Phase Lifecycle)
 
-### Phase 1: Pre-Execution Alignment Loop (Read-Only Analysis)
-1. Upon `MM_BUG` or `MM_FEAT`, `mm_vc_agent` analyzes screenshots/logs and outputs Root Cause/Spec, Target Files, and Blueprint.
-2. **🛑 CRITICAL BARRIER (Hard Stop)**: Do NOT create git branches, commits, issues, PRs, or modify any files. **END TURN IMMEDIATELY** and await developer alignment or `PROCEED`.
+### Phase 1 — Pre-Execution Alignment (Read-Only)
+On `MM_BUG`/`MM_FEAT`: `mm_vc_agent` analyzes screenshots/logs, outputs Root Cause/Spec, Target Files, Blueprint.
+**STOP:** no branches, commits, issues, PRs, or file edits. End turn; await developer alignment or `PROCEED`.
 
-### Phase 2: Execution & PR Provisioning (Triggered by `PROCEED`)
-1. When developer types `PROCEED`:
-   - `mm_gh_agent` creates GitHub Issue with the final blueprint and checks out branch.
-   - `mm_vc_agent` applies code changes and runs local validation.
-   - `mm_gh_agent` commits, pushes, and creates PR (`Closes #<id>`).
-   - Yields back for Live Local QA Testing.
+### Phase 2 — Execution & PR (on `PROCEED`)
+`mm_gh_agent` creates GitHub Issue with blueprint, checks out branch. `mm_vc_agent` applies code changes, runs local validation. `mm_gh_agent` commits, pushes, opens PR (`Closes #<id>`). Yields for Live Local QA.
 
-### Phase 3: QA Sign-off & Sync (Triggered by `MM_BUGFIXED` / `MM_FEATDONE`)
-1. On `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
-   - `mm_gh_agent` verifies build, squash-merges PR, closes Issue, switches to `main`, and pulls latest.
+### Phase 3 — QA Sign-off & Sync (on `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`)
+`mm_gh_agent` verifies build, squash-merges PR, closes Issue, switches to `main`, pulls latest.
 
-## Release Lifecycle Protocol (MM_RELEASE)
-- `MM_RELEASE <version>`: Checks clean tree, blocks if PRs open, warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>`, bumps versions, commits, and opens release PR in code freeze.
-- `MM_RELEASEDONE`: Squash-merges release PR, deletes branch, tags version on `main`, and publishes GitHub Release with auto-generated notes.
+## Release Lifecycle (`MM_RELEASE` / `MM_RELEASEDONE`)
+- `MM_RELEASE <version>`: checks clean tree, blocks if PRs open, warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>`, bumps versions, commits, opens release PR in code freeze.
+- `MM_RELEASEDONE`: squash-merges release PR (**do not delete branch**), tags version on `main`, publishes GitHub Release with auto-generated notes.
 
-Always request confirmation at critical transitions unless `--nocautious` is specified.
+Confirm at critical transitions unless `--nocautious`.
