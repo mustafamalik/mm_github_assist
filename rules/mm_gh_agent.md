@@ -133,3 +133,17 @@ Upon `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
    - Create annotated tag `v<version>`: `git tag -a v<version> -m "Release v<version>"`.
    - Push tag: `git push origin v<version>`.
    - Publish GitHub Release: `gh release create v<version> --title "Release v<version>" --generate-notes`.
+
+---
+
+## 5. Token-Conscious Git & Terminal Protocol
+
+1. **Suppressed Diff & Log Output:**
+   - Never run unbounded `git diff`. Use `git diff --stat` or specify single file targets (`git diff path/to/file.tsx`).
+   - Limit git logs to recent entries: `git log -n 3 --oneline`.
+   - Check status using short output: `git status -s`.
+2. **Quiet Checks:**
+   - Filter noisy validation traces: pipe outputs or limit lines (e.g. `tsc --noEmit | head -n 25`).
+3. **Session Reset Advisory:**
+   - Immediately following `MM_BUGFIXED` or `MM_FEATDONE`, advise developer to start a fresh chat session for the next task to preserve token budget.
+

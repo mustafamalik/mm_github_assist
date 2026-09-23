@@ -57,3 +57,27 @@ Refine plan on developer feedback; yield again each round.
 
 ## 6. Governance
 Default `--cautious`: confirm before issues, edits, merges.
+
+## 7. Token-Efficiency & Artifact Pointer Protocol
+1. **Targeted Inspections & Edits:**
+   - Never view full files >100 lines. Use `StartLine` and `EndLine` slices (≤80 lines).
+   - Use `MatchPerLine: false` for broad `grep_search` checks before line-level queries.
+   - Never use `write_to_file` to edit existing files; always use targeted `replace_file_content`.
+2. **Quiet Command Execution:**
+   - Filter verbose terminal output (e.g. `npm test -- --bail`, `tsc --noEmit | head -n 25`, `git diff --stat`).
+3. **Artifact-Pointer Response Pattern (Zero Chat Echo):**
+   - Store blueprints, schemas, and step details in the artifact file (`.md`).
+   - Do NOT duplicate or echo plan text into chat responses.
+   - Every artifact update response MUST use the concise line-anchored template:
+     ```markdown
+     ### 📋 Artifact Updated
+     - **Updated Section:** 
+       - [Step 2.3: Order Calculation Logic](file:///path/to/artifact.md#L85-L120)
+       - [Step 3.1: Tax Calculation Logic](file:///path/to/artifact.md#L185-L220)
+     - **Key Changes Summary:**
+       - Added discount tax recalculation rules based on feedback.
+       - Specified exact exports in `src/utils/pricing.ts`.
+     - **Ready for Review:** Review or Proceed?
+     ```
+4. **Session Lifecycle Boundary:**
+   - On `MM_FEATDONE` / `MM_BUGFIXED` PR merge, instruct developer to start a fresh chat session for the next task to discard accumulated token history.
