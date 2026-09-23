@@ -14,3 +14,22 @@ This project is enabled with the **MM Dual-Agent Suite** (`mm_vc_agent` & `mm_gh
 ## 2. Governance Flags
 * `--cautious`: step-by-step confirmation prompts.
 * `--nocautious`: streamlined flow.
+
+## 3. Token-Efficiency & Artifact Pointer Protocol
+1. **Targeted Inspections**: Limit `view_file` to ≤80 lines (`StartLine`/`EndLine`).
+2. **Quiet Commands**: Filter verbose logs (`tsc --noEmit | head -n 25`, `git diff --stat`).
+3. **Artifact-Pointer Pattern (Zero Chat Echo)**:
+   - Detailed plans/schemas live in the artifact markdown file.
+   - Assistant responses point directly to line ranges in the artifact:
+     ```markdown
+     ### 📋 Artifact Updated
+     - **Updated Section:** 
+       - [Step 2.3: Order Calculation Logic](file:///path/to/artifact.md#L85-L120)
+       - [Step 3.1: Tax Calculation Logic](file:///path/to/artifact.md#L185-L220)
+     - **Key Changes Summary:**
+       - Added discount tax recalculation rules based on feedback.
+       - Specified exact exports in `src/utils/pricing.ts`.
+     - **Ready for Review:** Review or Proceed?
+     ```
+4. **Session Boundary**: Start a fresh chat session after every PR merge (`MM_FEATDONE` / `MM_BUGFIXED`) to discard historical transcript tokens.
+

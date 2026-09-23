@@ -61,5 +61,17 @@
       "MM_RELEASEDONE"
     ],
     "description": "Signal QA passed for release, squash-merge PR, tag version, and publish GitHub Release"
+  },
+  "MM Artifact Pointer Update": {
+    "prefix": "mmartifact",
+    "body": [
+      "### 📋 Artifact Updated",
+      "- **Updated Section:** ",
+      "  - [${1:Step 2.3: Title}](${2:file:///path/to/artifact.md}#L${3:85}-L${4:120})",
+      "- **Key Changes Summary:**",
+      "  - ${5:Added discount tax recalculation rules based on feedback.}",
+      "- **Ready for Review:** Review or Proceed?"
+    ],
+    "description": "Zero-echo compact artifact pointer update"
   }
-}
+}

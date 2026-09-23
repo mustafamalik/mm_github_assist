@@ -26,4 +26,18 @@ On `MM_BUG`/`MM_FEAT`: `mm_vc_agent` analyzes screenshots/logs, outputs Root Cau
 - `MM_RELEASE <version>`: checks clean tree, blocks if PRs open, warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>`, bumps versions, commits, opens release PR in code freeze.
 - `MM_RELEASEDONE`: squash-merges release PR (**do not delete branch**), tags version on `main`, publishes GitHub Release with auto-generated notes.
 
+## Token-Efficiency & Artifact Pointer Protocol
+1. Targeted Slices: View ≤80 lines at a time.
+2. Quiet Commands: Restrict terminal outputs (`tsc --noEmit | head -n 25`, `git diff --stat`).
+3. Zero Chat Echo: Keep complete plans/schemas in the artifact file (`.md`).
+4. Artifact-Pointer Pattern: Assistant responses point to artifact line numbers:
+   ```markdown
+   ### 📋 Artifact Updated
+   - **Updated Section:** [Step 2.3](file:///path/to/artifact.md#L85-L120)
+   - **Key Changes Summary:** bulleted delta
+   - **Ready for Review:** Review or Proceed?
+   ```
+5. Fresh Threads: Start a new conversation after `MM_FEATDONE` / `MM_BUGFIXED` PR merge.
+
 Confirm at critical transitions unless `--nocautious`.
+

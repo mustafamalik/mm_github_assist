@@ -33,33 +33,21 @@ When triggered with `MM_BUG` or `MM_FEAT`:
 
 ### Collaborative Plan Alignment Loop (Crucial):
 * Before proceeding to code modification or GitHub issue creation, **support interactive to-and-fro feedback with the Developer**.
-* If the Developer provides feedback (e.g. suggests adding/removing files, altering styling constraints, or changing architectural scope), update and present a **Refined Action Plan**.
+* When drafting or revising blueprints, write or update the detailed plan in the dedicated artifact file (`.md`).
+* **Zero Chat Echo**: Do NOT reprint the full blueprint or schemas in the chat.
+* On updates, respond strictly using the compact **Artifact-Pointer Format**:
+```markdown
+### 📋 Artifact Updated
+- **Updated Section:** 
+  - [Step 2.3: Order Calculation Logic](file:///path/to/artifact.md#L85-L120)
+  - [Step 3.1: Tax Calculation Logic](file:///path/to/artifact.md#L185-L220)
+- **Key Changes Summary:**
+  - Added discount tax recalculation rules based on feedback.
+  - Specified exact exports in `src/utils/pricing.ts`.
+- **Ready for Review:** Review or Proceed?
+```
 * **Do NOT trigger `mm_gh_agent` or modify codebase until the Developer gives final alignment and explicit `PROCEED` consent.**
 
-### Standard Output Format:
-```markdown
-### 🧠 [mm_vc_agent] · Analysis & Action Plan
-
-#### 📋 Problem / Goal
-<Concise statement of problem or feature objective>
-
-#### 🔍 Root Cause / Architecture Design
-<Technical explanation of root cause or new architectural design>
-
-#### 🎯 Target Files
-- `path/to/file1.tsx`
-- `path/to/file2.css`
-
-#### 🛠️ Execution Blueprint
-1. <Step 1>
-2. <Step 2>
-3. <Step 3>
-
----
-> ❓ **HITL Alignment & Approval:**
-> Review the blueprint above. You can provide feedback to add/remove target files or adjust scope.
-> When fully aligned, reply with **PROCEED** to trigger GitHub Issue & Branch creation!
-```
 
 ---
 
