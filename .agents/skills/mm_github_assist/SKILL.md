@@ -31,7 +31,7 @@ Refine plan on developer feedback; yield again each round.
 ### Phase 3 — QA Sign-off & Sync (on `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`)
 `mm_gh_agent`: run pre-merge sanity checks; review PR commits and post a final summary comment; squash-merge PR; close Issue; delete remote branch; switch to `main`; `git pull`.
 
-## 3. Release Lifecycle (`MM_RELEASE` / `MM_RELEASEDONE`)
+## 3. Release Lifecycle (`MM_RELEASE`/`MMRELEASE`/`mmrelease` / `MM_RELEASEDONE`)
 
 ### Phase 1 — Pre-Release Gate (Read-Only)
 `mm_gh_agent` checks: working tree clean; zero open PRs (`gh pr list --state open`, halt+report if any); open issues (`gh issue list --state open`, warn+confirm); SemVer valid & no tag/release collision (`git tag -l`, `gh release list`), halt on collision or downgrade.
@@ -52,7 +52,7 @@ Refine plan on developer feedback; yield again each round.
 - `PROCEED`: approve → create Issue, branch, edits, PR.
 - `MM_GETISSUE`: print active Issue #, PR URL, branch, status card.
 - `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`: pre-merge check, squash-merge, close issue, checkout base, pull.
-- `MM_RELEASE <version>`: pre-release gate, collision check, blueprint. **READ-ONLY → STOP TURN.**
+- `MM_RELEASE <version>` / `MMRELEASE <version>` / `mmrelease <version>`: pre-release gate, collision check, blueprint. **READ-ONLY → STOP TURN.**
 - `MM_RELEASEDONE`: merge release PR (keep branch), sync `main`, tag, publish Release.
 
 ## 6. Governance
