@@ -1,11 +1,11 @@
 
 <!-- MM_DUAL_AGENT_START -->
 # MM Dual-Agent Commands (mm_vc_agent & mm_gh_agent)
-- `MM_BUG [details]`: Start bug triage, root cause analysis, and plan.
-- `MM_FEAT [details]`: Start feature design, file architecture, and plan.
-- `MM_GETISSUE`: Retrieve active GitHub issue, PR URL, and branch context.
-- `MM_BUGFIXED #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
-- `MM_FEATDONE #<id>`: Pre-merge build verification, squash-merge PR, and sync main branch.
-- `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, and release candidate PR.
-- `MM_RELEASEDONE`: Squash-merge release PR, tag version, and publish GitHub Release. **After merge DO NOT delete release branch**
+- `MM_BUG [details]`: Bug triage, root cause, plan.
+- `MM_FEAT [details]`: Feature design, file architecture, plan.
+- `MM_GETISSUE`: Active GitHub issue, PR URL, branch context.
+- `MM_BUGFIXED #<id>`: Pre-merge check, squash-merge PR, sync main.
+- `MM_FEATDONE #<id>`: Pre-merge check, squash-merge PR, sync main.
+- `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, release PR.
+- `MM_RELEASEDONE`: Squash-merge release PR (keep branch), tag version, publish GitHub Release.
 <!-- MM_DUAL_AGENT_END -->
