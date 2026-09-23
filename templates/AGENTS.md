@@ -9,7 +9,7 @@ This project is enabled with the **MM Dual-Agent Suite** (`mm_vc_agent` & `mm_gh
 * `MM_BUGFIXED #<id>`: Merge bug fix and close issue.
 * `MM_FEATDONE #<id>`: Merge feature and close issue.
 * `MM_RELEASE <version>`: Initiate pre-release gate, collision check, code-freeze branch, and release candidate PR.
-* `MM_RELEASEDONE`: Squash-merge release PR, tag version on main, and publish GitHub Release.
+* `MM_RELEASEDONE`: Squash-merge release PR, tag version on main, and publish GitHub Release. **After merge DO NOT delete release branch**
 
 ## 2. Governance Flags
 * Pass `--cautious` for step-by-step confirmation prompts.

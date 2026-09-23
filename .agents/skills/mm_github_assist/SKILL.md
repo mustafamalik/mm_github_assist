@@ -55,6 +55,7 @@ When the user types `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`
 When the developer initiates a release via `MM_RELEASE <version>`, `MMRELEASE <version>`, or `mmrelease <version>`:
 
 ### Phase 1: Pre-Release Gate & Collision Guard (Read-Only)
+
 1. `mm_gh_agent` executes read-only pre-flight checks:
    - **Cleanliness:** Ensures working tree is clean.
    - **Open PRs:** Checks `gh pr list --state open`. If any PR is open, halts and reports blocking PRs.
@@ -64,6 +65,7 @@ When the developer initiates a release via `MM_RELEASE <version>`, `MMRELEASE <v
    - Outputs Pre-Release Gate Report and prompts developer for explicit `PROCEED` consent before touching any branches or files.
 
 ### Phase 2: Code Freeze & Release Candidate Provisioning (Triggered by `PROCEED`)
+
 1. `mm_gh_agent` switches to `main`, pulls latest upstream, and creates branch `release/v<version>`.
 2. `mm_vc_agent` bumps version in `package.json`, `package-lock.json` (if present), and `README.md`.
 3. `mm_gh_agent` stages and commits: `chore(release): bump version to <version>`.
@@ -71,6 +73,7 @@ When the developer initiates a release via `MM_RELEASE <version>`, `MMRELEASE <v
 5. The `release/v<version>` branch enters **Code Freeze (Locked)** state awaiting QA approval.
 
 ### Phase 3: QA Sign-off, Tagging & Publishing (Triggered by `MM_RELEASEDONE`)
+
 1. `mm_gh_agent` squash-merges the release PR into `main` and deletes the remote release branch.
 2. `mm_gh_agent` checks out `main` and pulls latest changes (`git pull`).
 3. `mm_gh_agent` creates an annotated tag: `git tag -a v<version> -m "Release v<version>"`.
@@ -94,7 +97,7 @@ When the developer initiates a release via `MM_RELEASE <version>`, `MMRELEASE <v
 - `MM_BUGFIXED #<id>`: Run pre-merge check, squash-merge PR, close issue, checkout base branch, and git pull.
 - `MM_FEATDONE #<id>`: Run pre-merge check, squash-merge PR, close issue, checkout base branch, and git pull.
 - `MM_RELEASE <version>` / `MMRELEASE <version>` / `mmrelease <version>`: Initiate pre-release gate, collision check, and blueprint. **(READ-ONLY -> STOP TURN)**.
-- `MM_RELEASEDONE`: Merge release PR, delete release branch, sync `main`, create annotated tag, push tag, and publish GitHub Release.
+- `MM_RELEASEDONE`: Merge release PR, sync `main`, create annotated tag, push tag, and publish GitHub Release. **After merge DO NOT delete release branch**
 
 ## 6. Governance
 

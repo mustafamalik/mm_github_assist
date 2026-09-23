@@ -29,6 +29,6 @@ alwaysApply: true
 
 ## Release Lifecycle Protocol (MM_RELEASE)
 - `MM_RELEASE <version>`: Checks clean tree, blocks if PRs open, warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>`, bumps versions, commits, and opens release PR in code freeze.
-- `MM_RELEASEDONE`: Squash-merges release PR, deletes branch, tags version on `main`, and publishes GitHub Release with auto-generated notes.
+- `MM_RELEASEDONE`: Squash-merges release PR, tags version on `main`, and publishes GitHub Release with auto-generated notes. **After merge DO NOT delete release branch**
 
 Always request confirmation at critical transitions unless `--nocautious` is specified.

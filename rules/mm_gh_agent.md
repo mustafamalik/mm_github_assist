@@ -128,7 +128,7 @@ Upon `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
    - Push branch and open PR `Release: v<version>` labeled `release`.
    - Place branch in **Code Freeze (Locked)** state.
 3. **Publish Release (`MM_RELEASEDONE`)**:
-   - Squash-merge release PR and delete remote release branch.
+   - Squash-merge release PR. **Do not delete remote release branch.**
    - Switch to `main` and `git pull`.
    - Create annotated tag `v<version>`: `git tag -a v<version> -m "Release v<version>"`.
    - Push tag: `git push origin v<version>`.
