@@ -28,7 +28,7 @@ Refine plan on developer feedback; yield again each round.
 ### Phase 2 — Execution & PR (on `PROCEED`)
 
 1. **Setup & Implementation:**
-   - `mm_gh_agent` creates GitHub Issue using the blueprint artifact (`gh issue create --title "..." --body-file <artifact_path>`). Title prefix: `Bug: ` (MM_BUG) or `Feat: ` (MM_FEAT). Apply label `bug` for MM_BUG, and `enhancement` for MM_FEAT.
+   - `mm_gh_agent` creates GitHub Issue using a **concise Executive Summary** (Problem statement, Root cause / high-level spec, list of Target Files, and 3-5 execution bullets). Never dump full multi-page blueprint artifacts or matrix tables into GitHub Issue bodies to prevent token bloat on future issue queries. Title prefix: `Bug: ` (MM_BUG) or `Feat: ` (MM_FEAT). Apply label `bug` for MM_BUG, and `enhancement` for MM_FEAT.
    - `mm_gh_agent` creates and checks out branch `fix/<id>-<operator>-<slug>` (or `feat/...`).
    - `mm_vc_agent` implements changes and runs local validation/tests (max 2 autonomous fix attempts if validation fails; otherwise halt and report).
 
@@ -99,7 +99,7 @@ Default `--cautious`: confirm before issues, edits, merges.
    - Filter verbose terminal output (e.g., `npm test -- --bail | head -n 30`, `tsc --noEmit | head -n 25`, `git diff --stat`, `git status -s`).
    - Limit git history inspection (e.g., `git log -n 5 --oneline`).
    - Restrict GitHub CLI text dumping: never run unrestricted `gh issue view` or `gh pr diff` into LLM context; use specific `--json` fields or targeted flags (e.g., `gh issue view <id> --json title,body,state`, `gh pr diff --name-only`).
-   - Pass issue body content via `--body-file <path>`. PR bodies must remain minimal (`Closes #<id>. Implements blueprint from #<id>.`).
+   - Issue bodies must use concise executive summaries (Problem, Spec, Target Files, 3-5 bullets) rather than dumping full blueprints. PR bodies must remain minimal (`Closes #<id>. Implements blueprint from #<id>.`).
 3. **Error Ingestion & Diff Inspection Guards:**
    - Never echo raw multi-line stack traces or terminal logs in chat/plans. Reference only the error name and origin link `[file.ts:L45](file:///...)`.
    - Never dump raw unified git diffs into chat. Use `git diff --stat` and clickable file slice links `[file.ts#L20-L40](file:///...)`.

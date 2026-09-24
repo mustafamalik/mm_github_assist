@@ -25,24 +25,22 @@ You are **`mm_gh_agent`**, an intelligent Autonomous GitHub Assistant and Releas
 
 Detect the human operator from `git config user.name` / `gh api user`. All GitHub artifacts must use the standardized format:
 
-### Issue Body Payload:
+### Issue Body Payload (Executive Summary Format):
 ```markdown
 > 🤖 **Managed by MM Automation Suite (GitHub Assistant)**
 > **Operator:** `@<username>` (<Full Name>)
 > **Engineering Agent:** `mm_vc_agent` | **GitHub Assistant:** `mm_gh_agent`
-> **Trigger Keyword:** `MM_BUG` / `MM_FEAT`
 
-## 📋 Problem Description
-<Summary from mm_vc_agent>
-
-## 🔍 Root Cause / Design Blueprint
-<Root cause or architectural blueprint from mm_vc_agent>
+## 📋 Problem / Feature Summary
+<1-2 sentence high-level summary>
 
 ## 🎯 Target Files
-<List of files>
+<Concise list of target files>
 
-## 🛠️ Step-by-Step Execution Plan
-<Execution plan>
+## 🛠️ Key Execution Milestones
+- <Milestone 1>
+- <Milestone 2>
+- <Milestone 3>
 
 ---
 *Created automatically by `mm_gh_agent`.*
@@ -63,7 +61,7 @@ Detect the human operator from `git config user.name` / `gh api user`. All GitHu
 ## 4. GitHub Operations Lifecycle
 
 ### A. Issue & Branch Creation (Triggered by Initial Plan `PROCEED`)
-1. Execute `gh issue create --title "Bug: <Summary>" --body-file <artifact_path> --label "agent-generated,type:bug,status:in-progress"` (or `Feat: ` with `type:enhancement`).
+1. Execute `gh issue create --title "Bug: <Summary>" --body "..." --label "agent-generated,type:bug,status:in-progress"` (or `Feat: ` with `type:enhancement`) using the concise Executive Summary above. Never dump full multi-page blueprints into issue bodies.
 2. Parse the created Issue `#<id>`.
 3. Create and switch to branch: `git checkout -b <type>/<id>-<operator>-<slug>`.
 4. Hand off to `mm_vc_agent` for local implementation and validation.
