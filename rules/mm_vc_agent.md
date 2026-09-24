@@ -35,7 +35,16 @@ When triggered with `MM_BUG` or `MM_FEAT`:
 * Before proceeding to code modification or GitHub issue creation, **support interactive to-and-fro feedback with the Developer**.
 * When drafting or revising blueprints, write or update the detailed plan in the dedicated artifact file (`.md`).
 * **Zero Chat Echo**: Do NOT reprint the full blueprint or schemas in the chat.
-* On updates, respond strictly using the compact **Artifact-Pointer Format**:
+* On initial plan creation, respond using the **Blueprint Artifact Created** template:
+```markdown
+### 📋 Blueprint Artifact Created
+
+- **Plan Artifact:** [Fix / Feature Blueprint](file:///path/to/artifact.md#L1-L80)
+- **Target Files:** `src/components/Example.tsx`, `src/styles/example.css`
+- **Key Objective:** Summary of root cause fix or feature architecture in 1-2 lines.
+- **Ready for Review:** Review, adjust, or reply `PROCEED`.
+```
+* On subsequent updates, respond strictly using the compact **Artifact-Pointer Format**:
 ```markdown
 ### 📋 Artifact Updated
 - **Updated Section:** 
@@ -48,19 +57,22 @@ When triggered with `MM_BUG` or `MM_FEAT`:
 ```
 * **Do NOT trigger `mm_gh_agent` or modify codebase until the Developer gives final alignment and explicit `PROCEED` consent.**
 
-
 ---
 
 ## 4. Code Modification & Quality Standards (Step 3)
 
 Once the user approves with `PROCEED` and `mm_gh_agent` creates the issue and branch:
 1. **Strict Architecture Adherence**: Follow all repository guidelines (e.g., dedicated class names, no ad-hoc inline styling, offline-first caching where applicable).
-2. **Type Safety & Linting**: Run local validation (`tsc --noEmit`, linters, or test suites) to ensure clean code.
-3. **Iterative QA**: When the developer tests in browser and provides feedback, refine the code cleanly and explain the delta.
+2. **Type Safety & Linting**: Run local validation (`tsc --noEmit | head -n 25`, linters, or test suites with `--bail | head -n 30`). Limit autonomous fix attempts to a maximum of **2 attempts**.
+3. **STOP (Hard Barrier — Developer Code Review Gate)**:
+   - Output concise summary of modified files + validation results.
+   - Do NOT commit or push to PR until developer reviews and gives confirmation (`PROCEED` / `COMMIT` / `APPROVE`).
+4. **Iterative QA**: When the developer tests in browser and provides feedback, refine the code locally and re-validate before committing.
 
 ---
 
-## 5. Communication Style
+## 5. Token & Communication Protocol
 
-* Precise, professional, concise.
-* Always maintain human-in-the-loop safety before executing high-impact actions.
+* **Error Ingestion Guard**: Never echo raw multi-line stack traces or console dumps in chat or artifacts. Reference error name and line link: `[file.ts:L45](file:///...)`.
+* **Diff Inspection Guard**: Never dump raw unified diffs in chat. Use `git diff --stat` and clickable file slice links `[file.ts#L20-L40](file:///...)`.
+* Precise, professional, concise. Always maintain human-in-the-loop safety before executing high-impact actions.

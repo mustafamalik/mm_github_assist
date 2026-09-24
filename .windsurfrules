@@ -1,9 +1,10 @@
 
 <!-- MM_RULES_START -->
 # MM Dual-Agent Rules (mm_vc_agent & mm_gh_agent)
-- `MM_BUG [details]`: Bug triage, root cause, plan.
-- `MM_FEAT [details]`: Feature design, file architecture, plan.
-- `MM_GETISSUE`: Active GitHub issue, PR URL, branch context.
+- `MM_BUG [details]`: Bug triage, root cause, interactive artifact plan. (Read-Only)
+- `MM_FEAT [details]`: Feature design, architecture, interactive artifact plan. (Read-Only)
+- `PROCEED` / `COMMIT` / `APPROVE`: Approve plan ➔ issue/branch created ➔ local edits ➔ **STOP FOR CODE REVIEW** ➔ approve diff ➔ commit & open PR.
+- `MM_GETISSUE`: Active GitHub issue, PR URL, branch context (4-line card).
 - `MM_BUGFIXED #<id>`: Pre-merge check, squash-merge PR, sync main.
 - `MM_FEATDONE #<id>`: Pre-merge check, squash-merge PR, sync main.
 - `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, release PR.
@@ -11,16 +12,16 @@
 
 ## Token-Efficiency & Artifact Pointer Protocol
 1. Targeted Inspection: View max ≤80 lines per call (`StartLine`/`EndLine`).
-2. Quiet Commands: Filter logs (`tsc --noEmit | head -n 25`, `git diff --stat`).
+2. Quiet Commands: Filter logs (`tsc --noEmit | head -n 25`, `npm test -- --bail | head -n 30`, `git diff --stat`, `git status -s`).
 3. Zero Chat Echo: Store detailed blueprints and schemas in artifact files (`.md`).
 4. Artifact-Pointer Pattern: Assistant responses point to line ranges in the artifact:
    ```markdown
-   ### 📋 Artifact Updated
-   - **Updated Section:** 
-     - [Step 2.3: Logic](file:///path/to/artifact.md#L85-L120)
-   - **Key Changes Summary:**
-     - Bulleted delta summary.
-   - **Ready for Review:** Review or Proceed?
+   ### 📋 Blueprint Artifact Created
+   - **Plan Artifact:** [Fix Blueprint](file:///path/to/artifact.md#L1-L80)
+   - **Target Files:** `src/components/Example.tsx`
+   - **Key Objective:** 1-2 line summary.
+   - **Ready for Review:** Review, adjust, or reply `PROCEED`.
    ```
-5. Session Reset: Start fresh chat after each PR merge (`MM_FEATDONE` / `MM_BUGFIXED`).
+5. Developer Code Review Gate: Stop after local edits before commits/PR. Limit fix attempts to 2 max.
+6. Session Reset: Start fresh chat after each PR merge (`MM_FEATDONE` / `MM_BUGFIXED`).
 <!-- MM_RULES_END -->

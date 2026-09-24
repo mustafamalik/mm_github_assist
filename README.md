@@ -168,52 +168,63 @@ sequenceDiagram
     VC->>Dev: 2. Initial Root Cause + Target Files + Fix Blueprint
 
     rect rgb(240, 245, 255)
-        note over Dev,VC: Pre-Execution Alignment Loop (HITL)
+        note over Dev,VC: Phase 1: Pre-Execution Alignment Loop (HITL)
         Dev->>VC: Developer Feedback / File adjustments / Scope changes
         VC->>Dev: Updated & Refined Action Plan
     end
 
-    Dev->>GH: 3. "PROCEED" (Final HITL Approval on Aligned Plan)
+    Dev->>GH: 3. "PROCEED" (HITL Approval on Blueprint)
     GH->>Remote: 4. Creates Issue #142 (Embeds Final Aligned Blueprint)
     GH->>GH: 5. git checkout -b fix/142-slug
     VC->>VC: 6. Applies code changes & validates locally
-    VC->>GH: 7. Ready for PR
-    GH->>Remote: 8. git push + Opens PR #143 (Closes #142)
-    Note over Dev,Remote: Live Local QA Testing
-    Dev->>GH: 9. "MM_BUGFIXED #142"
-    GH->>GH: 10. Runs sanity build check
-    GH->>Remote: 11. Squash-merges PR #143 & closes Issue #142
-    GH->>GH: 12. git checkout main && git pull
-    GH->>Dev: 13. All synced & resolved!
+    VC->>Dev: 7. STOP (Hard Barrier): Diff summary & test results for Code Review
+
+    rect rgb(255, 245, 240)
+        note over Dev,VC: Phase 2: Local Code Review Loop (Uncommitted)
+        Dev->>VC: Local feedback / adjustments
+        VC->>VC: Updates code & re-validates locally
+        VC->>Dev: Updated diff & test summary
+    end
+
+    Dev->>GH: 8. "PROCEED" / "COMMIT" / "APPROVE" (Developer Code Sign-off)
+    GH->>GH: 9. git commit (Structured Multi-Line Message)
+    GH->>Remote: 10. git push + Opens PR #143 (Closes #142)
+    Note over Dev,Remote: Live Local QA Testing (Post-PR)
+    Dev->>GH: 11. "MM_BUGFIXED #142"
+    GH->>GH: 12. Runs sanity build check
+    GH->>Remote: 13. Squash-merges PR #143 & closes Issue #142
+    GH->>GH: 14. git checkout main && git pull
+    GH->>Dev: 15. All synced & resolved!
 ```
 
 ### What You See on GitHub:
 
-1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>` or `[FEAT] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Final Aligned Blueprint.**
+1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `Bug: <Summary>` or `Feat: <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Final Aligned Blueprint.**
 2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` (or `feat/...`) is created.
-3. **Structured Multi-Line Commits**: Every commit includes a descriptive subject line, an explanatory bulleted summary of changes in the body, and co-authorship attribution. Single-line commits without detail are strictly avoided.
-4. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
-5. **PR / Issue Iteration Comments**: Every review/QA iteration commit automatically posts a status update comment to the PR timeline detailing the commit hash, operator handle, and a breakdown of exact changes made in that commit.
-6. **Clean Merges**: On sign-off, PR is squash-merged, remote branch is deleted, and your local workspace is updated.
+3. **Developer Code Review Gate (Hard Barrier)**: Code changes and validation tests are verified locally *before* any git commit or push occurs, avoiding unnecessary commits and token consumption leakage.
+4. **Structured Multi-Line Commits**: On developer approval (`PROCEED` / `COMMIT` / `APPROVE`), `mm_gh_agent` creates a commit with a descriptive subject line, an explanatory bulleted summary of changes in the body, and co-authorship attribution. Single-line commits without detail are strictly forbidden.
+5. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
+6. **PR / Issue Iteration Comments**: Every review/QA iteration commit automatically posts a status update comment to the PR timeline detailing the commit hash, operator handle, and a breakdown of exact changes made in that commit.
+7. **Clean Merges**: On sign-off (`MM_BUGFIXED` / `MM_FEATDONE`), the PR is squash-merged, the remote branch is deleted, and your local workspace is updated.
 
 ---
 
 ## 6. Complete Command & Trigger Reference
 
-| Command                         | Trigger Agent                 | Purpose & What It Does                                                                                                | Example                                                   |
-| :------------------------------ | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
-| **`MM_ON`** / **`MM_ENABLE`**   | Suite Control                 | Activates the automated MM Dual-Agent pair programming and GitHub tracking.                                           | `MM_ON`                                                   |
-| **`MM_OFF`** / **`MM_DISABLE`** | Suite Control                 | Pauses the MM suite for standard, unconstrained AI chat without issue/PR tracking.                                    | `MM_OFF`                                                  |
-| **`MM_BUG [details]`**          | `mm_vc_agent`                 | (Phase 1) Ingests screenshots/logs, inspects code, presents root cause & blueprint. **Strictly Read-Only**.           | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
-| **`MM_FEAT [details]`**         | `mm_vc_agent`                 | (Phase 1) Analyzes architecture, plans target files & implementation blueprint. **Strictly Read-Only**.               | `MM_FEAT Add export CSV button with date range filter`    |
-| **`PROCEED`**                   | `mm_gh_agent` / `mm_vc_agent` | (Phase 2) Final developer approval. Creates GitHub Issue & branch, applies code edits, and opens PR for QA.           | `PROCEED`                                                 |
-| **`MM_GETISSUE`**               | `mm_gh_agent`                 | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long.                               | `MM_GETISSUE`                                             |
-| **`MM_BUGFIXED #<id>`**         | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`)                     |
-| **`MM_FEATDONE #<id>`**         | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch.          | `MM_FEATDONE #143` (or `MM_FEATDONE`)                     |
-| **`MM_RELEASE <version>`**       | `mm_gh_agent` / `mm_vc_agent` | (Release Phase 1 & 2) Runs pre-release gate, collision guard, code freeze, version bumps, and opens release PR.       | `MM_RELEASE 1.0.5`                                        |
-| **`MM_RELEASEDONE`**             | `mm_gh_agent`                 | (Release Phase 3) Merges release PR, tags annotated SemVer on `main`, and publishes GitHub Release with notes.        | `MM_RELEASEDONE`                                          |
-| **`--cautious`**                | Flag                          | Enforces strict confirmation at every individual transition step.                                                     | `MM_BUG --cautious Fix chart overflow`                    |
-| **`--nocautious`**              | Flag                          | Fast-tracks execution, pausing only at Initial Plan and Final QA.                                                     | `MM_BUG --nocautious Fix chart overflow`                  |
+| Command                         | Trigger Agent                 | Purpose & What It Does                                                                                                                   | Example                                                   |
+| :------------------------------ | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| **`MM_ON`** / **`MM_ENABLE`**   | Suite Control                 | Activates the automated MM Dual-Agent pair programming and GitHub tracking.                                                              | `MM_ON`                                                   |
+| **`MM_OFF`** / **`MM_DISABLE`** | Suite Control                 | Pauses the MM suite for standard, unconstrained AI chat without issue/PR tracking.                                                       | `MM_OFF`                                                  |
+| **`MM_BUG [details]`**          | `mm_vc_agent`                 | (Phase 1) Ingests screenshots/logs, inspects code, presents root cause & blueprint. **Strictly Read-Only**.                              | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
+| **`MM_FEAT [details]`**         | `mm_vc_agent`                 | (Phase 1) Analyzes architecture, plans target files & implementation blueprint. **Strictly Read-Only**.                                  | `MM_FEAT Add export CSV button with date range filter`    |
+| **`PROCEED`** / **`COMMIT`** / **`APPROVE`** | `mm_gh_agent` / `mm_vc_agent` | **Phase 1 ➔ 2**: Approves plan, creates Issue & branch, applies code & tests ➔ **STOPS at Review Gate**.<br>**At Review Gate**: Approves diff ➔ commits & opens PR. | `PROCEED`                                                 |
+| **`MM_GETISSUE`**               | `mm_gh_agent`                 | Instantly retrieves strict 4-line status card (Issue #, PR link, Phase status, active branch).          | `MM_GETISSUE`                                             |
+| **`MM_BUGFIXED #<id>`**         | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`.                    | `MM_BUGFIXED #142` (or `MM_BUGFIXED`)                     |
+| **`MM_FEATDONE #<id>`**         | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch.                             | `MM_FEATDONE #143` (or `MM_FEATDONE`)                     |
+| **`MM_RELEASE <version>`**       | `mm_gh_agent` / `mm_vc_agent` | (Release Phase 1 & 2) Runs pre-release gate, collision guard, code freeze, version bumps, and opens release PR.                          | `MM_RELEASE 1.0.5`                                        |
+| **`MM_RELEASEDONE`**             | `mm_gh_agent`                 | (Release Phase 3) Merges release PR, tags annotated SemVer on `main`, and publishes GitHub Release with notes.                           | `MM_RELEASEDONE`                                          |
+| **`--cautious`**                | Flag                          | Enforces strict confirmation at every individual transition step.                                                                        | `MM_BUG --cautious Fix chart overflow`                    |
+| **`--nocautious`**              | Flag                          | Fast-tracks execution, pausing only at Initial Plan and Final QA.                                                                        | `MM_BUG --nocautious Fix chart overflow`                  |
 
 ---
 
@@ -259,7 +270,7 @@ Also make sure to check the dark-mode tooltip styling in expense-analytics-dark.
 
 `mm_vc_agent` refines the blueprint and presents the updated target files.
 
-### Step 3: Granting Final Approval
+### Step 3: Granting Plan Approval
 
 When you are fully aligned with the blueprint, reply:
 
@@ -269,9 +280,25 @@ PROCEED
 
 `mm_gh_agent` creates **GitHub Issue #105** (posting the complete aligned Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
 
-### Step 4: Coding & PR Creation
+### Step 4: Implementation & Local Review Gate (Hard Barrier)
 
-`mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` creates a structured multi-line commit with a descriptive subject and a bulleted summary of changes, pushes to remote, and creates **Pull Request #106**.
+`mm_vc_agent` writes the fix and runs local validation/tests. Instead of immediately committing to git, `mm_vc_agent` hits a **STOP (Hard Barrier)**:
+
+```markdown
+### 📋 Local Implementation & Validation Complete
+
+- **Modified Files:**
+  - `src/components/AnalyticsTooltip.tsx`
+  - `src/styles/expense-analytics-dark.css`
+- **Validation:** Linter passed, tests passing (2 passed, 0 failed).
+- **Ready for Review:** Review local diff or type `PROCEED` to commit & open PR.
+```
+
+If you notice adjustments needed, `mm_vc_agent` refines the code locally without creating intermediate commits.
+
+### Step 5: Commit, PR Creation & Live Testing
+
+When satisfied with the local diff, reply `PROCEED` (or `COMMIT` / `APPROVE`). `mm_gh_agent` creates a structured multi-line commit, pushes to remote, and creates **Pull Request #106**.
 
 ```bash
 # Example of commit created automatically by mm_gh_agent:
@@ -282,27 +309,7 @@ git commit -m "fix(#105): resolve chart tooltip clipping on mobile screens" \
   -m "Co-authored-by: mm_vc_agent <agent@mm-automation.local>"
 ```
 
-### Step 5: Live Testing & QA Iteration
-
-You test on your local dev server (`npm run dev`). If you notice something minor:
-
-```text
-The tooltip looks great, but let's make the background slightly darker.
-```
-
-`mm_vc_agent` adjusts the color, and `mm_gh_agent` commits with an iteration summary, pushes to remote, and automatically posts an **Iteration Status Update comment** to the PR conversation:
-
-```markdown
-### 🤖 [mm_gh_agent for @mustafamalik] · Status Update
-
-- **Iteration:** #2
-- **Commit:** [`7d3d57b`](https://github.com/.../commit/7d3d57b)
-- **Summary of Changes:**
-  - Darkened tooltip background opacity to 0.95 for higher contrast
-- **Status:** Awaiting User Validation
-```
-
-### Step 5: Getting Context in Long Chats
+### Step 6: Getting Context in Long Chats
 
 If you've had a long conversation and forgot the issue number:
 
@@ -312,7 +319,7 @@ MM_GETISSUE
 
 `mm_gh_agent` prints the active Issue `#105` and PR `#106` summary card with operator attribution.
 
-### Step 6: Closing & Merging
+### Step 7: Closing & Merging
 
 Once tested and verified, type:
 
