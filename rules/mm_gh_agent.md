@@ -110,17 +110,18 @@ Upon `MM_BUGFIXED #<id>` or `MM_FEATDONE #<id>`:
    - Inspect tags and releases (`git tag -l`, `gh release list --limit 5`) to ensure valid SemVer and guard against collisions.
    - Prompt developer for `PROCEED`.
 2. **Release Branch & PR**:
-   - Checkout `main`, pull latest, create branch `release/v<version>`.
-   - Ensure `package.json`, `package-lock.json`, and `README.md` are updated by `mm_vc_agent`.
-   - Commit `chore(release): bump version to <version>`.
-   - Push branch and open PR `Release: v<version>` labeled `release`.
+   - Checkout `main`, pull latest, create branch `release/v<version>-(<vcode>)`.
+   - Ensure `package.json` (`version` and incremented `versioncode`), `package-lock.json`, and `README.md` are updated by `mm_vc_agent`.
+   - Commit `chore(release): bump version to <version> (<vcode>)`.
+   - Push branch and open PR `Release: v<version> (<vcode>)` labeled `release`.
    - Place branch in **Code Freeze (Locked)** state.
 3. **Publish Release (`MM_RELEASEDONE`)**:
    - Squash-merge release PR. **Do not delete remote release branch.**
    - Switch to `main` and `git pull`.
-   - Create annotated tag `v<version>`: `git tag -a v<version> -m "Release v<version>"`.
-   - Push tag: `git push origin v<version>`.
-   - Publish GitHub Release: `gh release create v<version> --title "Release v<version>" --generate-notes`.
+   - Apply dual annotated tags in single chained command:
+     `git tag -a v<version> -m "Release v<version> (<vcode>)" && git tag -a vcode-(<vcode>) -m "Release versioncode <vcode> for v<version>"`
+   - Push tags together: `git push origin v<version> vcode-(<vcode>)`.
+   - Publish GitHub Release: `gh release create v<version> --title "Release v<version> (<vcode>)" --generate-notes`.
 
 ---
 

@@ -23,8 +23,8 @@ On `MM_BUG`/`MM_FEAT`: `mm_vc_agent` analyzes screenshots/logs, outputs Root Cau
 `mm_gh_agent` verifies build, squash-merges PR, closes Issue, switches to `main`, pulls latest.
 
 ## Release Lifecycle (`MM_RELEASE` / `MM_RELEASEDONE`)
-- `MM_RELEASE <version>`: checks clean tree (`git status -s`), blocks if PRs open (`--limit 10`), warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>`, bumps versions, commits, opens release PR in code freeze.
-- `MM_RELEASEDONE`: squash-merges release PR (**do not delete branch**), tags version on `main`, publishes GitHub Release with auto-generated notes.
+- `MM_RELEASE <version>`: checks clean tree (`git status -s`), blocks if PRs open (`--limit 10`), warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>-(<vcode>)`, bumps version & increments `versioncode = current + 1`, commits, opens release PR `Release: v<version> (<vcode>)` in code freeze.
+- `MM_RELEASEDONE`: squash-merges release PR (**do not delete branch**), applies dual tags (`v<version>` & `vcode-(<vcode>)`) on `main`, publishes GitHub Release `Release v<version> (<vcode>)` with auto-generated notes.
 
 ## Token-Efficiency & Artifact Pointer Protocol
 1. Targeted Slices: View ≤80 lines at a time.

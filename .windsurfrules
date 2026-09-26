@@ -7,8 +7,8 @@
 - `MM_GETISSUE`: Active GitHub issue, PR URL, branch context (4-line card).
 - `MM_BUGFIXED #<id>`: Pre-merge check, squash-merge PR, sync main.
 - `MM_FEATDONE #<id>`: Pre-merge check, squash-merge PR, sync main.
-- `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, release PR.
-- `MM_RELEASEDONE`: Squash-merge release PR (keep branch), tag version, publish GitHub Release.
+- `MM_RELEASE <version>`: Pre-release gate, collision check, checkout `release/v<version>-(<vcode>)`, bump version & versioncode (`vcode = current + 1`), release PR `Release: v<version> (<vcode>)`.
+- `MM_RELEASEDONE`: Squash-merge release PR (keep branch), apply dual tags (`v<version>` & `vcode-(<vcode>)`), publish GitHub Release `Release v<version> (<vcode>)`.
 
 ## Token-Efficiency & Artifact Pointer Protocol
 1. Targeted Inspection: View max ≤80 lines per call (`StartLine`/`EndLine`).
