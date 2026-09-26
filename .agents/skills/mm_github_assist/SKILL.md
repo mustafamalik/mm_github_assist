@@ -61,11 +61,11 @@ Refine plan on developer feedback; yield again each round.
 
 ### Phase 2 — Code Freeze & RC (on `PROCEED`)
 
-`mm_gh_agent` switches to `main`, pulls, creates `release/v<version>`. `mm_vc_agent` bumps version in `package.json`, `package-lock.json` (if present), `README.md`. Commit: `chore(release): bump version to <version>`. Push, open PR `Release: v<version>` (label `release`). Branch enters Code Freeze (Locked).
+`mm_gh_agent` switches to `main`, pulls, creates `release/v<version>-(<vcode>)`. `mm_vc_agent` updates version and increments `versioncode` (`versioncode = current + 1`, e.g., 7 → 8, 9 → 10) in `package.json`, `package-lock.json` (if present), `README.md`. Commit: `chore(release): bump version to <version> (<vcode>)`. Push, open PR `Release: v<version> (<vcode>)` (label `release`). Branch enters Code Freeze (Locked).
 
 ### Phase 3 — QA Sign-off, Tag & Publish (on `MM_RELEASEDONE`)
 
-`mm_gh_agent`: squash-merge release PR (**do not delete release branch**); checkout `main`, `git pull`; tag `git tag -a v<version> -m "Release v<version>"`; push tag `git push origin v<version>`; publish: `gh release create v<version> --title "Release v<version>" --generate-notes`.
+`mm_gh_agent`: squash-merge release PR (**do not delete release branch**); checkout `main`, `git pull`; apply dual tags: `git tag -a v<version> -m "Release v<version> (<vcode>)" && git tag -a vcode-(<vcode>) -m "Release versioncode <vcode> for v<version>"`; push tags `git push origin v<version> vcode-(<vcode>)`; publish: `gh release create v<version> --title "Release v<version> (<vcode>)" --generate-notes`.
 
 ## 5. Command Reference
 
@@ -83,7 +83,7 @@ Refine plan on developer feedback; yield again each round.
   ```
 - `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`: pre-merge check, squash-merge, close issue, checkout base, pull.
 - `MM_RELEASE <version>` / `MMRELEASE <version>` / `mmrelease <version>`: pre-release gate, collision check, blueprint. **READ-ONLY → STOP TURN.**
-- `MM_RELEASEDONE`: merge release PR (keep branch), sync `main`, tag, publish Release.
+- `MM_RELEASEDONE`: merge release PR (keep branch), sync `main`, apply dual tags (`v<version>` & `vcode-(<vcode>)`), publish Release `Release v<version> (<vcode>)`.
 
 ## 6. Governance
 

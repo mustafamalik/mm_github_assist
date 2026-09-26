@@ -9,8 +9,8 @@ This project is enabled with the **MM Dual-Agent Suite** (`mm_vc_agent` & `mm_gh
 * `MM_GETISSUE`: Active issue #, PR link (4-line card).
 * `MM_BUGFIXED #<id>`: Merge bug fix, close issue.
 * `MM_FEATDONE #<id>`: Merge feature, close issue.
-* `MM_RELEASE <version>`: Pre-release gate, collision check, code-freeze branch, release PR.
-* `MM_RELEASEDONE`: Squash-merge release PR (keep branch), tag version on main, publish GitHub Release.
+* `MM_RELEASE <version>`: Pre-release gate, collision check, checkout `release/v<version>-(<vcode>)`, bump version & versioncode (`vcode = current + 1`), release PR `Release: v<version> (<vcode>)`.
+* `MM_RELEASEDONE`: Squash-merge release PR (keep branch), apply dual tags (`v<version>` & `vcode-(<vcode>)`), publish GitHub Release `Release v<version> (<vcode>)`.
 
 ## 2. Governance Flags
 * `--cautious`: step-by-step confirmation prompts.
