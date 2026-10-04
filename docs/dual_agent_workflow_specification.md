@@ -1,8 +1,11 @@
 # MM Dual-Agent GitHub & Vibe-Coding Automation Specification
-*(Signature Edition: `mm_vc_agent` & `mm_gh_agent` — Autonomous Vibe-Coder & GitHub Assistant)*
+
+_(Signature Edition: `mm_vc_agent` & `mm_gh_agent` — Autonomous Vibe-Coder & GitHub Assistant)_
 
 ## 1. Executive Summary & Objectives
+
 This specification defines the architecture, communication protocol, security model, and execution lifecycle for two collaborating MM agents:
+
 1. **`mm_vc_agent` (MM Vibe Code Agent / Architect)**: Handles code analysis, multi-modal screenshot/error inspection, architectural planning, code modification, linting, and local verification.
 2. **`mm_gh_agent` (MM GitHub Assistant / Release Manager)**: An intelligent GitHub Assistant handling all GitHub API/CLI interactions, Issue creation with embedded root cause & blueprints, Git branching, Pull Requests, automated tagging, PR reviews, and merging.
 
@@ -13,6 +16,7 @@ This workflow is generalized to handle **Bugs (`MM_BUG`)** and **Features/Enhanc
 ## 2. Personalized Naming, Identity & Multi-Developer Attribution
 
 ### 2.1 Multi-Developer Co-Attribution Model
+
 When multiple team members use the MM Dual-Agent suite on the same repository, every action clearly attributes **both the human operator and the agent**:
 
 ```mermaid
@@ -25,6 +29,7 @@ flowchart LR
 ### 2.2 Standard GitHub Attribution & Payload Headers
 
 #### 1. GitHub Issue Body Payload (Auto-generated from Step 1 Analysis):
+
 The entire Step 1 analysis (Root Cause, Affected Files, and Fix/Implementation Blueprint) is automatically compiled and posted as the official GitHub Issue description:
 
 ```markdown
@@ -34,40 +39,49 @@ The entire Step 1 analysis (Root Cause, Affected Files, and Fix/Implementation B
 > **Trigger Keyword:** `MM_BUG`
 
 ## 📋 Problem Description
+
 Expense breakdown chart tooltip flickers and overflows container on mobile viewport (< 768px).
 
 ## 🔍 Root Cause Analysis
+
 Container element `.expense-chart-wrapper` lacks `overflow: hidden` and relative positioning constraints, causing tooltip bounding box calculation to overflow outside the viewport.
 
 ## 🎯 Target Files
+
 - `src-saas/components/dashboard/drilldown/ExpenseAnalyticsView.tsx`
 - `src-saas/styles/expense-analytics.css`
 
 ## 🛠️ Step-by-Step Execution Plan
+
 1. Add dedicated CSS class `.saas-analytics-chart-container` to encapsulate chart boundary.
 2. Implement auto-placement boundary check for tooltip popover.
 3. Validate responsive layout under mobile breakpoint emulator.
 4. Run `tsc --noEmit` and repository lint checks.
 
 ---
-*Created automatically by `mm_gh_agent` upon operator approval.*
+
+_Created automatically by `mm_gh_agent` upon operator approval._
 ```
 
 #### 2. Progress Comment by `mm_gh_agent`:
+
 ```markdown
 ### 🤖 [mm_gh_agent for @mustafamalik] · Status Update
-* **Iteration:** #2
-* **Operator:** `@mustafamalik`
-* **Action:** Applied patch for secondary edge case reported during testing.
-* **Commit:** [`abc1234`](https://github.com/.../commit/abc1234)
-* **Summary of Changes:**
+
+- **Iteration:** #2
+- **Operator:** `@mustafamalik`
+- **Action:** Applied patch for secondary edge case reported during testing.
+- **Commit:** [`abc1234`](https://github.com/.../commit/abc1234)
+- **Summary of Changes:**
   - Recalibrated boundary offsets to prevent clipping on mobile viewports
   - Added test case verifying multi-series chart rendering
-* **Status:** Awaiting User Validation
+- **Status:** Awaiting User Validation
 ```
 
 #### 3. Multi-line Git Commit Message & Co-Authorship:
+
 Commits automatically record a descriptive subject, a bulleted summary of changes in the body, and co-authorship attribution:
+
 ```text
 fix(#142): adjust chart tooltip boundary constraints
 
@@ -79,14 +93,14 @@ Co-authored-by: mm_vc_agent <agent@mm-automation.local>
 
 ### 2.3 Standard Trigger & Query Commands
 
-| Command | Target Action | Closure / Follow-up Command |
-| :--- | :--- | :--- |
-| **`MM_BUG [details]`** | (Phase 1) Ingest bug description + screenshot, inspect root cause, formulate fix plan. **Strictly Read-Only**. | **`PROCEED`** |
-| **`MM_FEAT [details]`** | (Phase 1) Ingest feature spec, design architecture & file breakdown. **Strictly Read-Only**. | **`PROCEED`** |
-| **`PROCEED`** | (Phase 2) Authorize aligned blueprint. Provision Issue & branch, apply code edits, and open PR for live QA. | **`MM_BUGFIXED`** / **`MM_FEATDONE`** |
-| **`MM_GETISSUE`** | Instantly queries and prints the currently active Issue #, PR #, active branch, and status without needing to scroll through chat history. | Returns active issue summary card & direct links |
-| **`MM_BUGFIXED #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
-| **`MM_FEATDONE #<id>`** | (Phase 3) Pre-merge build sanity check, squash-merge PR, close issue, and sync workspace to latest `main`. | Workspace synced |
+| Command                 | Target Action                                                                                                                              | Closure / Follow-up Command                      |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
+| **`MM_BUG [details]`**  | (Phase 1) Ingest bug description + screenshot, inspect root cause, formulate fix plan. **Strictly Read-Only**.                             | **`PROCEED`**                                    |
+| **`MM_FEAT [details]`** | (Phase 1) Ingest feature spec, design architecture & file breakdown. **Strictly Read-Only**.                                               | **`PROCEED`**                                    |
+| **`PROCEED`**           | (Phase 2) Authorize aligned blueprint. Execute code edits locally and validate ➔ **STOP at Local QA Gate**.                                 | **`MM_BUGFIXED`** / **`MM_FEATDONE`**            |
+| **`MM_GETISSUE`**       | Instantly queries and prints the currently active Issue #, PR #, active branch, and status without needing to scroll through chat history. | Returns active issue summary card & direct links |
+| **`MM_BUGFIXED`**       | (Phase 3) Execute single-go GitHub lifecycle (Issue ➔ Branch ➔ Commit ➔ PR ➔ Merge ➔ Sync `main`).                                         | Workspace synced                                 |
+| **`MM_FEATDONE`**       | (Phase 3) Execute single-go GitHub lifecycle (Issue ➔ Branch ➔ Commit ➔ PR ➔ Merge ➔ Sync `main`).                                         | Workspace synced                                 |
 
 ### 2.4 Automated IDE Keybinding & Snippet Provisioning (Zero-Touch Setup with `mm_` Tags)
 
@@ -99,7 +113,7 @@ flowchart LR
     UserTrigger --> AgentInvocation["mm_vc_agent / mm_gh_agent Awakens"]
 ```
 
-* **Automated Injection Breakdown per IDE (All Namespaced with `mm_`):**
+- **Automated Injection Breakdown per IDE (All Namespaced with `mm_`):**
   - **VS Code / Antigravity / Cursor**:
     - Automatically injects `.vscode/keybindings.json` wrapped with `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */`.
     - Automatically generates `.vscode/mm_snippets.code-snippets` with `mmbug`, `mmfeat`, `mmgetissue`, `mmfix`, `mmdone`.
@@ -119,34 +133,31 @@ To balance safety and speed, the workflow supports dynamic governance flags that
 ```mermaid
 flowchart TD
     subgraph GovernanceFlags [Governance Control Flags]
-        F1["Flag: --cautious (Strict Step-by-Step Approval)"]
-        F2["Flag: --nocautious (Streamlined Key-Gate Mode)"]
+        F1["Flag: --cautious (Confirmation Prompts)"]
+        F2["Flag: --nocautious (Fast-Track Mode)"]
     end
 
     subgraph StrictFlow [Strict Mode: --cautious]
         S1["1. mm_vc_agent: Analyze Bug/Feat"] --> Q1{"User Approve Plan?"}
-        Q1 -->|Yes| S2["2. mm_gh_agent: Create Issue & Branch"]
-        S2 --> Q2{"User Approve Branch & Issue #?"}
-        Q2 -->|Yes| S3["3. mm_vc_agent: Apply Code Changes"]
-        S3 --> Q3{"User Approve Diff & Local Tests?"}
-        Q3 -->|Yes| S4["4. mm_gh_agent: Commit, Push & Create PR"]
-        S4 --> Q4{"User Test & Approve in Browser?"}
-        Q4 -->|Yes: MM_BUGFIXED / MM_FEATDONE| S5["5. mm_gh_agent: Run Pre-Merge Build"]
-        S5 --> Q5{"User Final Confirmation to Merge?"}
-        Q5 -->|Yes| S6["6. Merge PR & Sync Main Branch"]
+        Q1 -->|Yes: PROCEED| S2["2. mm_vc_agent: Local Edits & Tests"]
+        S2 --> Q2{"User Test & QA in Browser?"}
+        Q2 -->|Yes: MM_BUGFIXED / MM_FEATDONE| S3["3. mm_gh_agent: Create Issue & Branch"]
+        S3 --> S4["4. Commit & Push PR"]
+        S4 --> S5["5. Squash-Merge PR & Sync Main"]
     end
 ```
 
 ### 3.1 Governance Flags Definition
 
-| Flag | Mode Name | Behavior | Ideal For |
-| :--- | :--- | :--- | :--- |
-| **`--cautious`** *(Default)* | **Strict HITL Mode** | Explicitly halts and asks for user confirmation at **every single transition** (Plan Approval ➔ Issue Creation ➔ Code Diff ➔ PR Creation ➔ Merge Confirmation). | New projects, onboarding, high-risk codebases, or complex architectural changes. |
-| **`--nocautious`** | **Streamlined Mode** | Only pauses at essential gates: (1) Initial Plan, (2) User QA live testing, (3) Final sign-off trigger (`MM_BUGFIXED` / `MM_FEATDONE`). Auto-executes intermediate steps. | Fast day-to-day bug fixes, trusted workflows, and routine enhancements. |
+| Flag                         | Mode Name            | Behavior                                                                                                                                                                  | Ideal For                                                                        |
+| :--------------------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------- |
+| **`--cautious`** _(Default)_ | **Strict HITL Mode** | Explicitly halts and asks for user confirmation at key milestone transitions (Plan Approval ➔ Local Edits ➔ Phase 3 GitHub push and merge).                               | New projects, onboarding, high-risk codebases, or complex architectural changes. |
+| **`--nocautious`**           | **Streamlined Mode** | Only pauses at essential gates: (1) Initial Plan, (2) User Local QA Gate, (3) Final sign-off trigger (`MM_BUGFIXED` / `MM_FEATDONE`). Auto-executes intermediate steps. | Fast day-to-day bug fixes, trusted workflows, and routine enhancements.          |
 
 ### 3.2 Inline Usage Examples
+
 - `MM_BUG --cautious Fix chart overflow in ExpenseAnalytics` (Forces step-by-step confirmation)
-- `MM_BUG --nocautious Update button color to indigo` (Fast-tracks directly to PR for testing)
+- `MM_BUG --nocautious Update button color to indigo` (Fast-tracks directly to Local QA Gate)
 - `MM_FEAT --cautious Add export CSV button with background queue`
 
 ---
@@ -189,6 +200,7 @@ flowchart TD
 ## 5. GitHub Access & Security Architecture
 
 ### 5.1 Access Mechanisms
+
 ```mermaid
 flowchart TD
     subgraph Local Dev Environment [Local Machine / Any IDE]
@@ -197,7 +209,7 @@ flowchart TD
         GIT["Local Git Engine (git)"]
         ENV["Environment (.env.mm_agent.local / GITHUB_TOKEN)"]
     end
-    
+
     subgraph GitHub Remote [GitHub Platform]
         GH_API["GitHub REST / GraphQL API"]
         GH_REPO["Remote Repository"]
@@ -210,8 +222,8 @@ flowchart TD
     GIT -->|SSH / HTTPS Auth Push/Pull| GH_REPO
 ```
 
-* **Tier 1: GitHub CLI (`gh auth`) (Recommended)**: Leverages native interactive login (`gh auth status`). Safest, zero secret leakage.
-* **Tier 2: Fine-Grained PAT (`GITHUB_TOKEN`)**: Loaded via `.env.mm_agent.local` (strictly excluded in `.gitignore`).
+- **Tier 1: GitHub CLI (`gh auth`) (Recommended)**: Leverages native interactive login (`gh auth status`). Safest, zero secret leakage.
+- **Tier 2: Fine-Grained PAT (`GITHUB_TOKEN`)**: Loaded via `.env.mm_agent.local` (strictly excluded in `.gitignore`).
 
 ---
 
@@ -220,72 +232,66 @@ flowchart TD
 ```mermaid
 flowchart TD
     Idle([Idle State]) -->|Trigger: MM_BUG / MM_FEAT| Analysis["1. mm_vc_agent analyzes bug/spec + screenshot"]
-    Analysis --> PlanPresented["mm_vc_agent presents Root Cause & Fix Plan"]
-    PlanPresented -->|Gate 1: User Approves Plan| IssueCreated["2. mm_gh_agent creates Issue with Root Cause & Plan"]
-    IssueCreated -->|Gate 2: User Approves Branch| CodeApplied["3. mm_vc_agent applies code changes & runs linter"]
-    CodeApplied -->|Gate 3: User Approves Code Diff| PRCreated["4. mm_gh_agent commits, pushes, and creates PR"]
-    PRCreated --> ManualTesting["5. User tests changes in local dev server"]
-    
-    ManualTesting -->|Feedback / Adjustments| IterationFix["mm_vc_agent refines code"]
-    IterationFix --> PRUpdated["mm_gh_agent pushes commit"]
-    PRUpdated --> ManualTesting
+    Analysis --> PlanPresented["mm_vc_agent presents Root Cause & Fix Blueprint"]
+    PlanPresented -->|Gate 1: User Approves (PROCEED)| CodeApplied["2. mm_vc_agent applies code changes & validates locally"]
+    CodeApplied --> LocalQA["3. STOP (Local QA Gate): User tests in local dev server"]
 
-    ManualTesting -->|Query: MM_GETISSUE| StatusCard["mm_gh_agent displays active Issue # & PR URL"]
-    StatusCard --> ManualTesting
-    
-    ManualTesting -->|User: MM_BUGFIXED #ID / MM_FEATDONE #ID| PreMergeCheck["6. Sanity check: Run build/lint check"]
-    PreMergeCheck -->|Gate 4: User Final Merge Confirmation| Merged["7. mm_gh_agent squash-merges PR & closes Issue #ID"]
-    Merged --> WorkspaceSync["8. Checkout default branch & git pull latest"]
+    LocalQA -->|Feedback / Adjustments| IterationFix["mm_vc_agent refines code locally"]
+    IterationFix --> LocalQA
+
+    LocalQA -->|Query: MM_GETISSUE| StatusCard["mm_gh_agent displays active work card"]
+    StatusCard --> LocalQA
+
+    LocalQA -->|Sign-off: MM_BUGFIXED / MM_FEATDONE| IssueCreated["4. mm_gh_agent creates Issue with Executive Summary"]
+    IssueCreated --> BranchCommit["5. Create branch & structured multi-line commit"]
+    BranchCommit --> PRCreated["6. Push branch & open Pull Request"]
+    PRCreated --> Merged["7. Squash-merge PR & close Issue"]
+    Merged --> WorkspaceSync["8. Checkout main & git pull latest"]
     WorkspaceSync --> Idle
 ```
 
 ### Step 1: Ingestion & Analysis (`mm_vc_agent`)
+
 - Triggered by `MM_BUG` or `MM_FEAT`.
 - Detects the active developer identity from `git config user.name` / `gh api user`.
 - Analyzes screenshots, error logs, and repository code.
-- Produces **Root Cause Analysis**, **Affected Target Files**, and **Step-by-step Fix/Implementation Blueprint**.
-- **HITL Prompt**: *"Do you approve this plan to proceed with creating Issue & Branch? (Yes/Adjust)"*
+- Produces **Root Cause Analysis**, **Affected Target Files**, and **Step-by-step Fix/Implementation Blueprint** as an interactive Markdown Artifact.
+- Chat output follows the line-anchored pointer template.
 
-### Step 2: Issue & Branch Provisioning (`mm_gh_agent`)
-- Upon approval, runs `gh issue create`, **automatically injecting the full Root Cause, Target Files list, and Execution Plan** into the GitHub Issue body (as shown in Section 2.2).
-- Pins Issue ID:
-  > 📌 **Created Issue #142:** `https://github.com/org/repo/issues/142`  
-  > 👤 **Operator:** `@mustafamalik`  
-  > 🌿 **Active Branch:** `fix/142-expense-tooltip-overflow`  
-  > 💡 *Reference this issue with `MM_BUGFIXED #142` or `MM_FEATDONE #142`.*
-- Checks out new branch.
+### Step 2: Local Code Implementation & Local QA Gate (`mm_vc_agent`)
 
-### Step 3: Code Implementation & Local Validation (`mm_vc_agent`)
-- Implements modifications following project architectural rules.
-- Runs local typecheck and linting.
+- Upon receiving `PROCEED`, `mm_vc_agent` implements modifications locally following project architectural rules.
+- Runs local typecheck (`tsc --noEmit | head -n 25`) and linting/tests (max 2 autonomous fix attempts).
+- **STOP (Hard Barrier — Local QA Gate)**: Halts without making Git commits, pushes, or opening issues/PRs. Prompts the developer to verify on http://localhost:3000.
+- If the developer provides feedback or adjustments, `mm_vc_agent` iterates locally and re-validates.
 
-### Step 4: PR Creation & Live Testing (`mm_gh_agent`)
-- Commits and pushes branch to remote with operator metadata.
-- Opens Pull Request linked to Issue (`Closes #142`), including the plan and changelog in the PR description.
-- Prompts user to perform live testing on their local dev server.
+### Step 3: Single-Go GitHub Lifecycle & Merge (`mm_gh_agent`)
 
-### Step 5: Active Issue Querying (`MM_GETISSUE`)
-- If the chat conversation grows long and the user needs to check the issue number or branch:
-  - User types `MM_GETISSUE` (or snippet `mmgetissue` + <kbd>Tab</kbd>).
-  - `mm_gh_agent` immediately responds:
-    > 🔍 **Active Work Context:**  
-    > • **Operator:** `@mustafamalik`  
-    > • **Issue:** `#142` — *[BUG] ExpenseAnalytics chart tooltip overflow*  
-    > • **PR:** `#143` (`https://github.com/org/repo/pull/143`)  
-    > • **Branch:** `fix/142-expense-tooltip-overflow`  
-    > • **Status:** `In Review / Testing`  
-    > • **To Close & Merge:** Reply with `MM_BUGFIXED #142`
+- Triggered by `MM_BUGFIXED` or `MM_FEATDONE`.
+- `mm_gh_agent` executes the full lifecycle in one automated flow:
+  1. Creates GitHub Issue (`gh issue create`) with a 3-milestone Executive Summary.
+  2. Creates and checks out branch `fix/<id>-<operator>-<slug>` (or `feat/...`).
+  3. Stages files and creates a structured multi-line commit with co-authorship.
+  4. Pushes branch and opens Pull Request (`gh pr create --title "..." --body "Closes #<id>. Implements blueprint from #<id>."`).
+  5. Reviews PR commits (`gh pr view --json commits --limit 5`), squash-merges PR (`gh pr merge <pr_id> --squash --delete-branch`), and closes Issue.
+  6. Switches to `main`, pulls latest (`git pull origin main`), and advises developer to start a fresh chat session.
 
-### Step 6: Final Sign-off & Merge (`mm_gh_agent`)
-- Triggered by `MM_BUGFIXED #142` or `MM_FEATDONE #142`.
-- `mm_gh_agent` performs pre-merge sanity check (`npm run build` / `tsc`).
-- Upon confirmation: Squash-merges PR, closes Issue, switches back to base branch, and runs `git pull`.
+### Step 4: Active Work Querying (`MM_GETISSUE`)
+
+- User types `MM_GETISSUE`.
+- `mm_gh_agent` responds with the strict 4-line status card.
+
+### Step 5: Release Lifecycle (`MM_RELEASE` / `MM_RELEASEDONE`)
+
+- `MM_RELEASE <version>`: Checks clean working tree, checks open PRs/issues, verifies SemVer, creates `release/v<version>-(<vcode>)`, bumps version & increments `versioncode = current + 1`, and opens release PR in code freeze.
+- `MM_RELEASEDONE`: Squash-merges release PR (keeps branch), syncs `main`, applies dual annotated tags (`v<version>` & `vcode-(<vcode>)`), and publishes GitHub Release.
 
 ---
 
 ## 7. Reusable Open-Source Distribution & Surgical Uninstall Architecture
 
 ### 7.1 Repository Structure (`mm-dual-agent`)
+
 ```text
 mm-dual-agent/
 ├── README.md                      # Complete User Manual & Documentation
@@ -307,6 +313,7 @@ mm-dual-agent/
 ```
 
 ### 7.2 Explicit `mm_` Tagging Strategy for Pristine Teardowns
+
 Every installed artifact is systematically prefixed and tagged with `mm_` to guarantee that uninstallation is 100% deterministic and never accidentally touches other project configurations:
 
 ```mermaid
@@ -321,16 +328,17 @@ flowchart TD
 ```
 
 #### Complete Namespace Mapping Table:
-| Component | Installation Path with `mm_` Tag | Teardown Action |
-| :--- | :--- | :--- |
-| **Antigravity Skills** | `.agents/skills/mm_github_assist/` | Deleted directory |
-| **Antigravity Agents** | `.agents/agents/mm_vc_agent.json`, `mm_gh_agent.json` | Deleted files |
-| **Cursor Rules** | `.cursor/rules/mm_dual_agent.mdc` | Deleted file |
-| **Claude Skills** | `.claude/skills/mm_github_ops/` | Deleted directory |
-| **VS Code Snippets** | `.vscode/mm_snippets.code-snippets` | Deleted file |
-| **VS Code Keybindings** | Injected block between `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` in `.vscode/keybindings.json` | Surgically removed block |
-| **Windsurf Rules** | Injected block between `<!-- MM_RULES_START -->` and `<!-- MM_RULES_END -->` in `.windsurfrules` | Surgically removed block |
-| **Environment File** | `.env.mm_agent.local` | Prompted deletion / archive |
+
+| Component               | Installation Path with `mm_` Tag                                                                                 | Teardown Action             |
+| :---------------------- | :--------------------------------------------------------------------------------------------------------------- | :-------------------------- |
+| **Antigravity Skills**  | `.agents/skills/mm_github_assist/`                                                                               | Deleted directory           |
+| **Antigravity Agents**  | `.agents/agents/mm_vc_agent.json`, `mm_gh_agent.json`                                                            | Deleted files               |
+| **Cursor Rules**        | `.cursor/rules/mm_dual_agent.mdc`                                                                                | Deleted file                |
+| **Claude Skills**       | `.claude/skills/mm_github_ops/`                                                                                  | Deleted directory           |
+| **VS Code Snippets**    | `.vscode/mm_snippets.code-snippets`                                                                              | Deleted file                |
+| **VS Code Keybindings** | Injected block between `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` in `.vscode/keybindings.json` | Surgically removed block    |
+| **Windsurf Rules**      | Injected block between `<!-- MM_RULES_START -->` and `<!-- MM_RULES_END -->` in `.windsurfrules`                 | Surgically removed block    |
+| **Environment File**    | `.env.mm_agent.local`                                                                                            | Prompted deletion / archive |
 
 ---
 
@@ -338,10 +346,11 @@ flowchart TD
 
 This section serves as the complete, authoritative User Manual included directly in the root `README.md` of the open-source repository.
 
-```markdown
+````markdown
 # 🚀 MM Dual-Agent Suite
+
 > **Autonomous AI Pair Programming & GitHub Assistant for Vibe Coding**  
-> *Crafted by Mustafa Malik (MM)*
+> _Crafted by Mustafa Malik (MM)_
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Compatible With](https://img.shields.io/badge/IDE-Antigravity%20%7C%20Cursor%20%7C%20Claude%20%7C%20VS%20Code%20%7C%20Windsurf-orange)]()
@@ -350,6 +359,7 @@ This section serves as the complete, authoritative User Manual included directly
 ---
 
 ## 📖 Table of Contents
+
 1. [Overview & The MM Duo](#overview--the-mm-duo)
 2. [Multi-Developer & Team Attribution](#multi-developer--team-attribution)
 3. [Prerequisites & GitHub Setup (Essential)](#prerequisites--github-setup-essential)
@@ -369,18 +379,19 @@ This section serves as the complete, authoritative User Manual included directly
 
 The **MM Dual-Agent Suite** turns your AI assistant into an agile pair-programming team:
 
-* 🧠 **`mm_vc_agent` (MM Vibe Code Agent / Architect)**: Reads your codebase, analyzes multi-modal bug screenshots, writes clean code adhering to your architecture, and verifies builds locally.
-* 🐙 **`mm_gh_agent` (MM GitHub Assistant / Release Manager)**: An intelligent GitHub assistant that communicates with GitHub, opens Issues with root cause blueprints, creates feature branches, submits Pull Requests, logs iteration notes, and safely squash-merges into your main branch.
+- 🧠 **`mm_vc_agent` (MM Vibe Code Agent / Architect)**: Reads your codebase, analyzes multi-modal bug screenshots, writes clean code adhering to your architecture, and verifies builds locally.
+- 🐙 **`mm_gh_agent` (MM GitHub Assistant / Release Manager)**: An intelligent GitHub assistant that communicates with GitHub, opens Issues with root cause blueprints, creates feature branches, submits Pull Requests, logs iteration notes, and safely squash-merges into your main branch.
 
 ---
 
 ## 2. Multi-Developer & Team Attribution
 
 When multiple team members (e.g., Alice, Bob, and Mustafa) use the MM Dual-Agent Suite on the same project:
-* **Automatic Identity Detection**: The agent inspects the active developer's Git config (`git config user.name`) and GitHub login (`gh auth status`).
-* **Attributed PRs & Comments**: Every PR description and comment is clearly branded with the developer's handle:
+
+- **Automatic Identity Detection**: The agent inspects the active developer's Git config (`git config user.name`) and GitHub login (`gh auth status`).
+- **Attributed PRs & Comments**: Every PR description and comment is clearly branded with the developer's handle:
   `### 🤖 [mm_gh_agent for @mustafamalik] · Status Update`
-* **No Collision**: Each developer gets unique branch names (`fix/142-mustafa-expense-overflow`), ensuring zero branch collisions between teammates.
+- **No Collision**: Each developer gets unique branch names (`fix/142-mustafa-expense-overflow`), ensuring zero branch collisions between teammates.
 
 ---
 
@@ -388,7 +399,8 @@ When multiple team members (e.g., Alice, Bob, and Mustafa) use the MM Dual-Agent
 
 Before using the agents, your local environment needs permissions to talk to GitHub. You have **two easy options**:
 
-### Option A: GitHub CLI (`gh`) — *Recommended (Easiest & Safest)*
+### Option A: GitHub CLI (`gh`) — _Recommended (Easiest & Safest)_
+
 The GitHub CLI allows the agents to run securely using your local authenticated credentials without exposing tokens.
 
 1. **Install GitHub CLI:**
@@ -409,16 +421,20 @@ The GitHub CLI allows the agents to run securely using your local authenticated 
    ```bash
    gh auth login
    ```
-   *Follow the prompts: Choose `GitHub.com` ➔ `HTTPS` or `SSH` ➔ `Login with a web browser`.*
-3. **Verify it works:**
-   ```bash
-   gh auth status
-   ```
-   *(You should see: `Logged in to github.com account <username>`)*
+````
+
+_Follow the prompts: Choose `GitHub.com` ➔ `HTTPS` or `SSH` ➔ `Login with a web browser`._ 3. **Verify it works:**
+
+```bash
+gh auth status
+```
+
+_(You should see: `Logged in to github.com account <username>`)_
 
 ---
 
-### Option B: Personal Access Token (Fine-Grained PAT) — *For Headless or CI Environments*
+### Option B: Personal Access Token (Fine-Grained PAT) — _For Headless or CI Environments_
+
 If you prefer using a token instead of the GitHub CLI:
 
 1. Go to **GitHub Settings ➔ Developer Settings ➔ Personal Access Tokens ➔ Fine-grained tokens** (or [click here](https://github.com/settings/tokens?type=beta)).
@@ -433,7 +449,7 @@ If you prefer using a token instead of the GitHub CLI:
    ```env
    GITHUB_TOKEN=github_pat_your_token_here
    ```
-   *(Note: The installer automatically adds `.env.mm_agent.local` to `.gitignore` so your key is never committed).*
+   _(Note: The installer automatically adds `.env.mm_agent.local` to `.gitignore` so your key is never committed)._
 
 ---
 
@@ -446,6 +462,7 @@ npx mm-dual-agent init
 ```
 
 The interactive CLI will automatically:
+
 1. Detect your active code editor (**Antigravity, Cursor, Claude Code, VS Code, Windsurf**).
 2. Validate your GitHub connection (`gh auth status`).
 3. **Auto-Inject `mm_` Tagged Configs**: Injects `.vscode/mm_snippets.code-snippets`, keybindings tagged with `/* MM_KEYBINDINGS_START */`, and rules files without touching existing user configurations.
@@ -455,7 +472,7 @@ The interactive CLI will automatically:
 
 ## 5. What Happens on GitHub? (The Lifecycle)
 
-Here is exactly what the agents do on your GitHub repository during a task:
+Here is exactly what the agents do during a task lifecycle:
 
 ```mermaid
 sequenceDiagram
@@ -465,42 +482,59 @@ sequenceDiagram
     participant GH as mm_gh_agent (GitHub Assistant)
     participant Remote as GitHub.com
 
-    Dev->>VC: "MM_BUG [issue] + screenshot"
-    VC->>Dev: Root Cause + Target Files + Fix Blueprint
-    Dev->>GH: "PROCEED" (HITL Approval)
-    GH->>Remote: Creates Issue #142 (Embeds Root Cause & Blueprint)
-    GH->>GH: git checkout -b fix/142-slug
-    VC->>VC: Applies code changes & validates locally
-    VC->>GH: Ready for PR
-    GH->>Remote: git push + Opens PR #143 (Closes #142)
-    Note over Dev,Remote: Live Local QA Testing
-    Dev->>GH: "MM_BUGFIXED #142"
-    GH->>GH: Runs sanity build check
-    GH->>Remote: Squash-merges PR #143 & closes Issue #142
-    GH->>GH: git checkout main && git pull
-    GH->>Dev: All synced & resolved!
+    rect rgb(240, 245, 255)
+        note over Dev,VC: Phase 1: Pre-Execution Alignment Loop (HITL)
+        Dev->>VC: 1. "MM_BUG [issue] + screenshot" or "MM_FEAT"
+        VC->>Dev: 2. Blueprint Artifact Created (Line-Anchored Pointer)
+        Dev->>VC: 3. Plan Feedback or "PROCEED"
+    end
+
+    rect rgb(245, 255, 240)
+        note over Dev,VC: Phase 2: Local Execution & QA Gate (Zero Git / GitHub)
+        VC->>VC: 4. Applies code changes & validates locally (tsc / tests)
+        VC->>Dev: 5. STOP (Hard Barrier): Diff summary & test results for QA
+        Dev->>VC: 6. (Optional) Local adjustments & iterative refinements
+    end
+
+    rect rgb(255, 245, 245)
+        note over Dev,GH: Phase 3: Single-Go GitHub Lifecycle on Sign-off
+        Dev->>GH: 7. "MM_BUGFIXED" (or "MM_FEATDONE")
+        GH->>Remote: 8. Creates Issue with Executive Summary
+        GH->>GH: 9. git checkout -b fix/<id>-<slug> & structured git commit
+        GH->>Remote: 10. git push & opens Pull Request
+        GH->>Remote: 11. Reviews PR commits, squash-merges & closes Issue
+        GH->>GH: 12. git checkout main & git pull origin main
+        GH->>Dev: 13. All synced & resolved! (Advises fresh chat session)
+    end
 ```
 
 ### What You See on GitHub:
-1. **GitHub Issues**: An issue is opened with label `agent-generated` and title `[BUG] <Summary>`. **The body contains the complete Root Cause Analysis, list of Target Files, and Step-by-Step Blueprint.**
-2. **GitHub Branches**: A clean branch `fix/<issue-id>-<operator>-<slug>` is created.
-3. **GitHub Pull Requests**: A PR is opened with a description linking `Closes #<id>`, showing full diffs and changelogs.
-4. **Issue / PR Comments**: Every iteration note is logged with badge `### 🤖 [mm_gh_agent for @username] · Status Update`.
-5. **Clean Merges**: On sign-off, PR is squash-merged, remote branch is deleted, and your local workspace is updated.
+
+1. **Local Isolation During Development**: Code changes, compilations, and tests happen 100% locally in Phase 2 without generating noise, interim commits, or premature PRs on GitHub.
+2. **Single-Go GitHub Automation**: Upon typing `MM_BUGFIXED` or `MM_FEATDONE`, `mm_gh_agent` executes the entire GitHub lifecycle in a single automated flow.
+3. **Concise Executive Summary Issues**: An issue is opened with label `agent-generated` and title `Bug: <Summary>` (or `Feat: <Summary>`) with a clean 3-milestone executive summary.
+4. **Structured Multi-Line Commits**: Commits feature a clear subject line, bulleted details of changes, and co-authorship attribution. Single-line-only commits are forbidden.
+5. **Clean Pull Requests**: A PR is opened with `Closes #<id>`, reviewed, and squash-merged cleanly with remote branch cleanup.
+6. **Synchronized Main Branch**: Your local workspace is checked out to `main` and pulled to latest immediately upon completion.
 
 ---
 
 ## 6. Complete Command & Trigger Reference
 
-| Command | Trigger Agent | Purpose & What It Does | Example |
-| :--- | :--- | :--- | :--- |
-| **`MM_BUG [details]`** | `mm_vc_agent` | Starts bug investigation. Ingests screenshots/logs, inspects code, and presents root cause & fix plan. | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
-| **`MM_FEAT [details]`** | `mm_vc_agent` | Starts feature/enhancement flow. Analyzes architecture, plans new files, and outlines implementation. | `MM_FEAT Add export CSV button with date range filter` |
-| **`MM_GETISSUE`** | `mm_gh_agent` | Instantly retrieves active Issue #, PR link, active branch, and status if chat is long. | `MM_GETISSUE` |
-| **`MM_BUGFIXED #<id>`** | `mm_gh_agent` | Signals QA passed for a bug. Runs pre-merge build checks, squash-merges PR, closes issue, and pulls `main`. | `MM_BUGFIXED #142` (or `MM_BUGFIXED`) |
-| **`MM_FEATDONE #<id>`** | `mm_gh_agent` | Signals QA passed for a feature. Verifies build, squash-merges PR, closes issue, and syncs branch. | `MM_FEATDONE #143` (or `MM_FEATDONE`) |
-| **`--cautious`** | Flag | Enforces strict confirmation at every individual transition step. | `MM_BUG --cautious Fix chart overflow` |
-| **`--nocautious`** | Flag | Fast-tracks execution, pausing only at Initial Plan and Final QA. | `MM_BUG --nocautious Fix chart overflow` |
+| Command                         | Trigger Agent                 | Purpose & What It Does                                                                                                                   | Example                                                   |
+| :------------------------------ | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| **`MM_ON`** / **`MM_ENABLE`**   | Suite Control                 | Activates the automated MM Dual-Agent pair programming and GitHub tracking.                                                              | `MM_ON`                                                   |
+| **`MM_OFF`** / **`MM_DISABLE`** | Suite Control                 | Pauses the MM suite for standard, unconstrained AI chat without issue/PR tracking.                                                       | `MM_OFF`                                                  |
+| **`MM_BUG [details]`**          | `mm_vc_agent`                 | (Phase 1) Ingests screenshots/logs, inspects code, presents root cause & blueprint. **Strictly Read-Only**.                              | `MM_BUG Tooltip gets clipped on mobile view in Analytics` |
+| **`MM_FEAT [details]`**         | `mm_vc_agent`                 | (Phase 1) Analyzes architecture, plans target files & implementation blueprint. **Strictly Read-Only**.                                  | `MM_FEAT Add export CSV button with date range filter`    |
+| **`PROCEED`**                   | `mm_vc_agent`                 | (Phase 2) Approves blueprint and executes code changes & tests locally ➔ **STOPS at Local QA Gate**.                                      | `PROCEED`                                                 |
+| **`MM_GETISSUE`**               | `mm_gh_agent`                 | Instantly retrieves strict 4-line status card (Issue #, PR link, Phase status, active branch).                                           | `MM_GETISSUE`                                             |
+| **`MM_BUGFIXED`**               | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a bug. Executes full single-go GitHub lifecycle (Issue ➔ Branch ➔ Commit ➔ PR ➔ Merge ➔ Sync `main`).    | `MM_BUGFIXED` (or `MM_BUGFIXED #142`)                     |
+| **`MM_FEATDONE`**               | `mm_gh_agent`                 | (Phase 3) Signals QA passed for a feature. Executes full single-go GitHub lifecycle (Issue ➔ Branch ➔ Commit ➔ PR ➔ Merge ➔ Sync `main`).| `MM_FEATDONE` (or `MM_FEATDONE #143`)                     |
+| **`MM_RELEASE <version>`**       | `mm_gh_agent` / `mm_vc_agent` | (Release Phase 1 & 2) Runs pre-release gate, collision guard, code freeze, checkout `release/v<version>-(<vcode>)`, bumps version & `versioncode = current + 1`, and opens release PR `Release: v<version> (<vcode>)`. | `MM_RELEASE 1.0.5`                                        |
+| **`MM_RELEASEDONE`**             | `mm_gh_agent`                 | (Release Phase 3) Merges release PR, applies dual tags (`v<version>` & `vcode-(<vcode>)`), and publishes GitHub Release `Release v<version> (<vcode>)`. | `MM_RELEASEDONE`                                          |
+| **`--cautious`**                | Flag                          | Enforces confirmation prompts at key milestone transitions.                                                                              | `MM_BUG --cautious Fix chart overflow`                    |
+| **`--nocautious`**              | Flag                          | Fast-tracks execution, pausing only at Initial Plan and Local QA Gate.                                                                   | `MM_BUG --nocautious Fix chart overflow`                  |
 
 ---
 
@@ -508,15 +542,19 @@ sequenceDiagram
 
 Once installed, use these built-in snippets in your IDE chat or files:
 
-| Snippet Shortcut | Action | What Gets Injected |
-| :--- | :--- | :--- |
-| `mmbug` | Press <kbd>Tab</kbd> | `MM_BUG: ` |
-| `mmfeat` | Press <kbd>Tab</kbd> | `MM_FEAT: ` |
-| `mmgetissue` | Press <kbd>Tab</kbd> | `MM_GETISSUE` |
-| `mmfix` | Press <kbd>Tab</kbd> | `MM_BUGFIXED #` |
-| `mmdone` | Press <kbd>Tab</kbd> | `MM_FEATDONE #` |
+| Snippet Shortcut | Action               | What Gets Injected   |
+| :--------------- | :------------------- | :------------------- |
+| `mmon`           | Press <kbd>Tab</kbd> | `MM_ON`              |
+| `mmoff`          | Press <kbd>Tab</kbd> | `MM_OFF`             |
+| `mmbug`          | Press <kbd>Tab</kbd> | `MM_BUG: `           |
+| `mmfeat`         | Press <kbd>Tab</kbd> | `MM_FEAT: `          |
+| `mmgetissue`     | Press <kbd>Tab</kbd> | `MM_GETISSUE`        |
+| `mmfix`          | Press <kbd>Tab</kbd> | `MM_BUGFIXED`        |
+| `mmdone`         | Press <kbd>Tab</kbd> | `MM_FEATDONE`        |
+| `mmrelease`      | Press <kbd>Tab</kbd> | `MM_RELEASE `        |
+| `mmreleasedone`  | Press <kbd>Tab</kbd> | `MM_RELEASEDONE`     |
 
-*(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation).*
+_(Keybindings like <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd> are auto-configured in your IDE during installation)._
 
 ---
 
@@ -527,51 +565,53 @@ In your IDE chat, paste a screenshot or error and type:
 ```text
 MM_BUG The expense breakdown chart tooltip flickers and gets cut off on mobile screens.
 ```
-`mm_vc_agent` will inspect your components, identify the CSS / component issue, and present a **Fix Plan with Root Cause and Target Files**.
+`mm_vc_agent` inspects your components, identifies the CSS/component issue, and presents an interactive **Fix Blueprint Artifact**.
 
 ### Step 2: Approving the Plan
-You reply:
+Review the line-anchored blueprint. When aligned, reply:
 ```text
 PROCEED
 ```
-`mm_gh_agent` creates **GitHub Issue #105** (posting the complete Root Cause Analysis and Blueprint in the description) and switches to branch `fix/105-mustafa-chart-tooltip-flicker`.
 
-### Step 3: Coding & PR Creation
-`mm_vc_agent` writes the fix and verifies the build. `mm_gh_agent` commits, pushes, and creates **Pull Request #106**.
+### Step 3: Local Implementation & Testing (Phase 2)
+`mm_vc_agent` applies the fix locally and runs validation (`npx tsc --noEmit` / tests). It halts at the **Local QA Gate**:
+```markdown
+### 📋 Local Implementation & Validation Complete
+- **Modified Files:** `src/components/AnalyticsTooltip.tsx`, `src/styles/expense-analytics.css`
+- **Validation:** TypeScript 0 errors, build checks passing.
+- **Ready for Review:** Test locally on http://localhost:3000 and reply `MM_BUGFIXED` when verified.
+```
 
-### Step 4: Testing & Iteration
-You test on your local dev server (`npm run dev`). If you notice something minor:
+### Step 4: Local Testing & Iteration
+You test on your local dev server (`npm run dev`). If you notice an adjustment needed:
 ```text
 The tooltip looks great, but let's make the background slightly darker.
 ```
-`mm_vc_agent` adjusts the color, and `mm_gh_agent` pushes an update commit.
+`mm_vc_agent` updates the CSS locally and re-validates, re-yielding at the Local QA Gate without touching Git or GitHub.
 
-### Step 5: Getting Context in Long Chats
-If you've had a long conversation and forgot the issue number:
-```text
-MM_GETISSUE
-```
-`mm_gh_agent` prints the active Issue `#105` and PR `#106` summary card with operator attribution.
-
-### Step 6: Closing & Merging
+### Step 5: Single-Go GitHub Lifecycle & Merge (Phase 3)
 Once tested and verified, type:
 ```text
-MM_BUGFIXED #105
+MM_BUGFIXED
 ```
-`mm_gh_agent` runs a pre-merge sanity check, squash-merges PR `#106`, closes Issue `#105`, checks out `main`, and runs `git pull`.
+`mm_gh_agent` autonomously executes the entire GitHub lifecycle in a single automated chain:
+1. Creates GitHub Issue `#105` with an Executive Summary.
+2. Creates branch `fix/105-mustafa-chart-tooltip-flicker` and commits with a structured multi-line message.
+3. Pushes branch and opens Pull Request `#106`.
+4. Reviews PR commits, squash-merges PR `#106`, and closes Issue `#105`.
+5. Checks out `main` and pulls latest (`git pull origin main`).
+6. Confirms completion and prompts to start a fresh chat session for the next task.
 
 ---
 
 ## 9. Governance & Safety: `--cautious` vs `--nocautious`
 
-* **`--cautious` (Default / Maximum Safety)**:
-  The agents will ask for your explicit confirmation before:
-  1. Creating an Issue and Branch on GitHub.
-  2. Modifying files in the workspace.
-  3. Pushing code and opening a PR.
-  4. Merging the PR to main.
-* **`--nocautious` (Fast Execution)**:
-  The agents will proceed autonomously from Plan approval directly to PR creation, stopping only when ready for your local manual testing.
+- **`--cautious` (Default / Maximum Safety)**:
+  The agents will ask for confirmation before:
+  1. Modifying files in the workspace.
+  2. Executing the single-go Phase 3 GitHub push and merge.
+- **`--nocautious` (Fast Execution)**:
+  The agents proceed directly from Plan approval (`PROCEED`) to local coding and validation, stopping only at the Local QA Gate for your manual verification.
 
 ---
 
@@ -593,35 +633,59 @@ npx mm-dual-agent uninstall
 ```
 
 ### What Gets Removed (Identified by `mm_` Tags):
-* ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
-* ✅ Deletes `.vscode/mm_snippets.code-snippets`.
-* ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_github_assist/`).
-* ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
+
+- ✅ Surgically strips injected MM shortcuts bounded by `/* MM_KEYBINDINGS_START */` and `/* MM_KEYBINDINGS_END */` from `.vscode/keybindings.json`.
+- ✅ Deletes `.vscode/mm_snippets.code-snippets`.
+- ✅ Removes all generated agent rules (`.cursor/rules/mm_dual_agent.mdc`, `.windsurfrules` MM blocks, `.agents/skills/mm_github_assist/`).
+- ✅ Prompts to securely delete or archive `.env.mm_agent.local`.
 
 ### What Stays Untouched:
-* 🛡️ Your source code, Git history, closed GitHub issues, and merged Pull Requests remain 100% intact and untouched.
+
+- 🛡️ Your source code, Git history, closed GitHub issues, and merged Pull Requests remain 100% intact and untouched.
 
 ---
 
 ## 12. Troubleshooting & FAQ
 
 #### Q: `gh: command not found`
-* **Fix**: Install GitHub CLI (`winget install GitHub.cli` or `brew install gh`), restart your terminal/IDE, and run `gh auth login`.
+
+- **Fix**: Install GitHub CLI (`winget install GitHub.cli` or `brew install gh`), restart your terminal/IDE, and run `gh auth login`.
 
 #### Q: `Authentication failed / Unauthorized`
-* **Fix**: Run `gh auth status`. If expired, run `gh auth refresh -h github.com -s repo` or check your `GITHUB_TOKEN` in `.env.mm_agent.local`.
+
+- **Fix**: Run `gh auth status`. If expired, run `gh auth refresh -h github.com -s repo` or check your `GITHUB_TOKEN` in `.env.mm_agent.local`.
 
 #### Q: `Git working tree is dirty / uncommitted changes`
-* **Fix**: `mm_gh_agent` will warn you before switching branches. Stash your changes with `git stash` or commit them before starting a new `MM_BUG` or `MM_FEAT`.
+
+- **Fix**: `mm_gh_agent` will warn you before switching branches. Stash your changes with `git stash` or commit them before starting a new `MM_BUG` or `MM_FEAT`.
 
 #### Q: Can I use this with private repositories?
-* **Yes!** As long as your GitHub account or PAT has access to the private repository, the suite operates identically.
+
+- **Yes!** As long as your GitHub account or PAT has access to the private repository, the suite operates identically.
 
 #### Q: How do I change the default branch from `main` to `master` or `develop`?
-* **Fix**: Configure `base_branch` in `.agents/config.json` or pass `--base develop`.
+
+- **Fix**: Configure `base_branch` in `.agents/config.json` or pass `--base develop`.
 
 ---
 
 ## 📄 License
+
 Released under the [MIT License](LICENSE). Built with ❤️ for the AI developer community.
-```
+
+---
+
+### Comprehensive Token Savings Breakdown
+
+| Optimization Layer | Before (Token Cost) | After (Token Cost) | Estimated Tokens Saved per Task |
+| :--- | :--- | :--- | :--- |
+| **1. Initial Blueprint Output (Phase 1)** | ~2,500 – 4,000 tokens echoed into chat | ~180 tokens (line-anchored artifact pointer) | ~3,500 tokens |
+| **2. Plan Iteration Feedback (Phase 1)** | ~2,000 – 3,500 tokens echoed per feedback turn | ~120 tokens (compact delta pointer) | ~5,000 tokens |
+| **3. Code Review Gate (Phase 2)** | ~4,000 – 8,000 tokens per premature commit/push cycle | 0 tokens (local uncommitted review loop) | ~12,000 – 25,000 tokens |
+| **4. Executive Summary Issue Bodies** | ~1,500 – 3,000 tokens per issue/PR CLI query | ~250 tokens (compact 3-milestone structure) | ~2,500 tokens |
+| **5. Autonomous Fix Cap (Max 2 Attempts)** | Unbounded retry loops (25,000 – 60,000 tokens) | Hard capped at 2 attempts | ~35,000+ tokens (on compile/test errors) |
+| **6. Minimal PR Body (Closes #<id>)** | ~1,000 – 2,000 tokens in shell execution strings | ~80 tokens (reference only) | ~1,500 tokens |
+| **7. Quiet CLI Outputs (--stat, head -n 25)** | ~2,000 – 5,000 tokens per raw terminal dump | ~150 – 300 tokens (piped & filtered) | ~4,000 tokens |
+| **8. Error & Diff Inspection Guards** | ~3,000 – 6,000 tokens per raw stack/diff dump | ~120 tokens (file links + stat only) | ~4,500 tokens |
+| **🔥 TOTAL ESTIMATED SAVINGS** | — | — | **🚀 ~65,000 – 80,000+ tokens saved per task!** |
+

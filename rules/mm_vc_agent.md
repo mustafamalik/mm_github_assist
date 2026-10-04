@@ -59,15 +59,17 @@ When triggered with `MM_BUG` or `MM_FEAT`:
 
 ---
 
-## 4. Code Modification & Quality Standards (Step 3)
+## 4. Code Modification & Local QA Standards (Phase 2)
 
-Once the user approves with `PROCEED` and `mm_gh_agent` creates the issue and branch:
-1. **Strict Architecture Adherence**: Follow all repository guidelines (e.g., dedicated class names, no ad-hoc inline styling, offline-first caching where applicable).
-2. **Type Safety & Linting**: Run local validation (`tsc --noEmit | head -n 25`, linters, or test suites with `--bail | head -n 30`). Limit autonomous fix attempts to a maximum of **2 attempts**.
-3. **STOP (Hard Barrier — Developer Code Review Gate)**:
+Once the user approves the blueprint with `PROCEED`:
+1. **Local Code Implementation**: `mm_vc_agent` implements code edits locally without creating premature git commits, branches, or GitHub issues/PRs.
+2. **Strict Architecture Adherence**: Follow all repository guidelines (e.g., dedicated class names, no ad-hoc inline styling, offline-first caching where applicable).
+3. **Type Safety & Linting**: Run local validation (`tsc --noEmit | head -n 25`, linters, or test suites with `--bail | head -n 30`). Limit autonomous fix attempts to a maximum of **2 attempts**.
+4. **STOP (Hard Barrier — Developer Code Review & Local QA Gate)**:
    - Output concise summary of modified files + validation results.
-   - Do NOT commit or push to PR until developer reviews and gives confirmation (`PROCEED` / `COMMIT` / `APPROVE`).
-4. **Iterative QA**: When the developer tests in browser and provides feedback, refine the code locally and re-validate before committing.
+   - Prompt developer for local review, live testing, and verification.
+   - **Local Iterations**: If the developer tests locally and provides review feedback or adjustments, `mm_vc_agent` refines the code locally and re-validates, re-yielding at the hard barrier without touching git or GitHub.
+5. **Phase 3 Hand-off**: Once local QA is verified, the developer signs off with `MM_BUGFIXED` (or `MM_FEATDONE`), triggering `mm_gh_agent` to execute the full GitHub lifecycle in a single automated flow.
 
 ---
 

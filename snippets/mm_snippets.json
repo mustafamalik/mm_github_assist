@@ -23,16 +23,16 @@
   "MM Bug Fixed Sign-off": {
     "prefix": "mmfix",
     "body": [
-      "MM_BUGFIXED #${1:issue_number}"
+      "MM_BUGFIXED"
     ],
-    "description": "Signal QA passed for bug fix, squash-merge PR, and sync main branch"
+    "description": "Signal QA passed for bug fix, execute single-go GitHub lifecycle, and sync main branch"
   },
   "MM Feature Done Sign-off": {
     "prefix": "mmdone",
     "body": [
-      "MM_FEATDONE #${1:issue_number}"
+      "MM_FEATDONE"
     ],
-    "description": "Signal QA passed for feature, squash-merge PR, and sync main branch"
+    "description": "Signal QA passed for feature, execute single-go GitHub lifecycle, and sync main branch"
   },
   "MM Enable Suite": {
     "prefix": "mmon",

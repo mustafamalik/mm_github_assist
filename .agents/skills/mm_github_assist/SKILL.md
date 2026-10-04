@@ -21,36 +21,28 @@ Triggers: `MM_BUG`, `MM_FEAT`, `PROCEED`, `MM_GETISSUE`, `MM_BUGFIXED`, `MM_FEAT
 
 ### Phase 1 — Pre-Execution Alignment (Read-Only)
 
-On `MM_BUG [details]`/`MM_FEAT [details]`: `mm_vc_agent` analyzes screenshots/logs/repo (read-only). Output: Interactive Markdown Artifact Plan with Root Cause Analysis (bug) or Architectural Spec (feature), Target Files, Step-by-Step Blueprint. Chat output as concise as possible (reference: ## 7. Token-Efficiency & Artifact Pointer Protocol).
-**STOP (hard barrier):** no file edits/creates/deletes, no branches/commits/issues/PRs, no modification tools. End turn; ask for review, adjustments, or `PROCEED`.
-Refine plan on developer feedback; yield again each round.
+1. On `MM_BUG [details]`/`MM_FEAT [details]`: `mm_vc_agent` analyzes screenshots/logs/repo (read-only). Output: Interactive Markdown Artifact Plan with Root Cause Analysis (bug) or Architectural Spec (feature), Target Files, Step-by-Step Blueprint. Chat output as concise as possible (reference: ## 7. Token-Efficiency & Artifact Pointer Protocol).
+2. **STOP (hard barrier):** no file edits/creates/deletes, no branches/commits/issues/PRs, no modification tools. End turn; ask for review, adjustments, or `PROCEED`.
+3. Refine plan on developer feedback; yield again each round.
 
-### Phase 2 — Execution & PR (on `PROCEED`)
+### Phase 2 — Local Execution, Testing & Local QA Gate (on `PROCEED`)
 
-1. **Setup & Implementation:**
-   - `mm_gh_agent` creates GitHub Issue using a **concise Executive Summary** (Problem statement, Root cause / high-level spec, list of Target Files, and 3-5 execution bullets). Never dump full multi-page blueprint artifacts or matrix tables into GitHub Issue bodies to prevent token bloat on future issue queries. Title prefix: `Bug: ` (MM_BUG) or `Feat: ` (MM_FEAT). Apply label `bug` for MM_BUG, and `enhancement` for MM_FEAT.
-   - `mm_gh_agent` creates and checks out branch `fix/<id>-<operator>-<slug>` (or `feat/...`).
-   - `mm_vc_agent` implements changes and runs local validation/tests (max 2 autonomous fix attempts if validation fails; otherwise halt and report).
+1. **Local Implementation & Verification:**
+   - `mm_vc_agent` implements code edits locally and runs validation/tests (e.g., `npx tsc --noEmit`) (max 2 autonomous fix attempts if validation fails; otherwise halt and report).
 
-2. **STOP (Hard Barrier — Developer Code Review Gate):**
-   - **No git commits, no git pushes, no PR creation yet.**
-   - `mm_vc_agent` outputs concise summary of modified files + test/lint results (reference: ## 7. Token-Efficiency & Artifact Pointer Protocol), and prompts developer for local review/feedback or `PROCEED` (or `COMMIT`/`APPROVE`).
-   - If developer provides review feedback or adjustments: `mm_vc_agent` refines code locally and runs tests, re-yielding at the hard barrier without committing.
+2. **STOP (Hard Barrier — Developer Code Review & Local QA Gate):**
+   - **No git commits, no git pushes, no GitHub issues/PRs created yet.**
+   - `mm_vc_agent` outputs concise summary of modified files + test/lint results, and prompts developer for local review, live testing, and verification.
+   - **Local Iterations:** If developer provides review feedback or adjustments, `mm_vc_agent` refines code locally and runs tests, re-yielding at the hard barrier without touching git or GitHub.
 
-3. **Commit & PR Creation (on Developer Approval `PROCEED` / `COMMIT` / `APPROVE`):**
-   - `mm_gh_agent` commits with a structured multi-line message (title + change summary). Single-line-only commits forbidden.
-   - `mm_gh_agent` pushes branch, opens PR (`gh pr create --title "..." --body "Closes #<id>. Implements blueprint from #<id>."`).
-   - Yield to developer for Live Local QA Testing.
+### Phase 3 — Single-Go GitHub Lifecycle, Merge & Sync (on `MM_BUGFIXED` / `MM_FEATDONE`)
 
-4. **Subsequent QA & Review Feedback (Post-PR Iterations):**
-   - On feedback/QA failures: `mm_vc_agent` applies fixes locally and validates (max 2 attempts).
-   - **STOP (Hard Barrier):** prompts developer for local verification before committing.
-   - On developer approval (`PROCEED` / `COMMIT` / `APPROVE`): `mm_gh_agent` commits with structured multi-line body and pushes to PR.
-   - **Do not** enter Phase 3 without developer confirmation.
-
-### Phase 3 — QA Sign-off & Sync (on `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`)
-
-`mm_gh_agent`: run pre-merge sanity checks; review PR commits (`gh pr view --json commits --limit 5`) and post a final summary comment; squash-merge PR; close Issue; delete remote branch; switch to `main`; `git pull`.
+Once developer completes QA and signs off with `MM_BUGFIXED` (or `MM_FEATDONE`), `mm_gh_agent` executes the entire GitHub lifecycle in a single continuous automated flow:
+1. **Create Issue:** `gh issue create` with concise Executive Summary (Problem statement, Root cause / high-level spec, list of Target Files, and 3-5 execution bullets). Title prefix: `Bug: ` (MM_BUG) or `Feat: ` (MM_FEAT). Apply label `bug` for MM_BUG, and `enhancement` for MM_FEAT.
+2. **Branch & Commit:** Create & checkout branch `fix/<id>-<operator>-<slug>` (or `feat/...`), stage files, and commit with structured multi-line message (headline + change summary). Single-line-only commits forbidden. 
+3. **Push & PR:** Push branch to remote and open Pull Request (`gh pr create --title "..." --body "Closes #<id>. Implements blueprint from #<id>."`). Apply label `bug` for MM_BUG, and `enhancement` for MM_FEAT.
+4. **Squash Merge & Close:** Review PR commits (`gh pr view --json commits --limit 5`), post final summary comment, squash-merge PR (`gh pr merge <pr_id> --squash --delete-branch`), and close Issue.
+5. **Sync & Reset:** Switch to `main`, run `git pull origin main`, verify clean working tree, and instruct developer to start a fresh chat session.
 
 ## 3. Release Lifecycle (`MM_RELEASE`/`MMRELEASE`/`mmrelease` / `MM_RELEASEDONE`)
 
@@ -65,15 +57,13 @@ Refine plan on developer feedback; yield again each round.
 
 ### Phase 3 — QA Sign-off, Tag & Publish (on `MM_RELEASEDONE`)
 
-`mm_gh_agent`: squash-merge release PR (**do not delete release branch**); checkout `main`, `git pull`; apply dual tags: `git tag -a v<version> -m "Release v<version> (<vcode>)" && git tag -a vcode-(<vcode>) -m "Release versioncode <vcode> for v<version>"`; push tags `git push origin v<version> vcode-(<vcode>)`; publish: `gh release create v<version> --title "Release v<version> (<vcode>)" --generate-notes`.
+`mm_gh_agent`: squash-merge release PR (**do not delete release branch**); checkout `main`, `git pull`; apply dual tags: `git tag -a v<version> -m "Release v<version> (<vcode>)"; git tag -a vcode-(<vcode>) -m "Release versioncode <vcode> for v<version>"`; push tags `git push origin v<version> vcode-(<vcode>)`; publish: `gh release create v<version> --title "Release v<version> (<vcode>)" --generate-notes`.
 
 ## 5. Command Reference
 
-- `MM_BUG [details]` / `MM_FEAT [details]`: Blueprint (root cause/spec, target files, steps). **READ-ONLY → STOP TURN.**
-- `PROCEED` / `COMMIT` / `APPROVE`:
-  - From Phase 1: approve blueprint → create Issue, branch, local edits & validation → **STOP FOR CODE REVIEW**.
-  - From Code Review Gate: approve diff & test results → commit with structured multi-line message & push/open PR.
-  - From Post-PR Review Gate: approve local adjustments → commit & push to PR branch.
+- `MM_BUG [details]` / `MM_FEAT [details]`: Blueprint (root cause/spec, target files, steps). **READ-ONLY → STOP FOR PLAN REVIEW.**
+- `PROCEED`: Execute code edits locally & validate → **STOP FOR LOCAL CODE REVIEW & QA TESTING.**
+- `MM_BUGFIXED` / `MM_FEATDONE`: Sign off QA → Execute full GitHub lifecycle (Issue → Branch → Commit → PR → Merge → Sync `main`) in a single continuous flow.
 - `MM_GETISSUE`: print strict 4-line status card:
   ```markdown
   - **Issue:** #<id> (<title>)
@@ -81,7 +71,7 @@ Refine plan on developer feedback; yield again each round.
   - **Status:** Phase <1|2|3> (<step>)
   - **Branch:** `<branch_name>`
   ```
-- `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`: pre-merge check, squash-merge, close issue, checkout base, pull.
+- `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`: (Historical/manual reference) pre-merge check, squash-merge, close issue, checkout base, pull.
 - `MM_RELEASE <version>` / `MMRELEASE <version>` / `mmrelease <version>`: pre-release gate, collision check, blueprint. **READ-ONLY → STOP TURN.**
 - `MM_RELEASEDONE`: merge release PR (keep branch), sync `main`, apply dual tags (`v<version>` & `vcode-(<vcode>)`), publish Release `Release v<version> (<vcode>)`.
 
