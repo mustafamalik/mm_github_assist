@@ -16,11 +16,11 @@ alwaysApply: true
 On `MM_BUG`/`MM_FEAT`: `mm_vc_agent` analyzes screenshots/logs, outputs Root Cause/Spec, Target Files, Blueprint.
 **STOP:** no branches, commits, issues, PRs, or file edits. End turn; await developer alignment or `PROCEED`.
 
-### Phase 2 — Execution & PR (on `PROCEED`)
-`mm_gh_agent` creates GitHub Issue using blueprint artifact (`--body-file`), checks out branch. `mm_vc_agent` applies code changes, runs local validation (max 2 fix attempts). **STOP (Hard Barrier):** outputs modified files & test results for developer code review. On developer approval (`PROCEED` / `COMMIT` / `APPROVE`), `mm_gh_agent` commits with structured multi-line message, pushes, and opens PR (`Closes #<id>`). Yields for Live Local QA. Subsequent post-PR fixes also adhere to local test $\rightarrow$ STOP $\rightarrow$ commit.
+### Phase 2 — Local Execution, Testing & Local QA Gate (on `PROCEED`)
+`mm_vc_agent` implements code edits locally and runs validation/tests (max 2 fix attempts). **STOP (Hard Barrier — Developer Code Review & Local QA Gate):** No git commits, no git pushes, no GitHub issues/PRs created yet. `mm_vc_agent` outputs concise summary of modified files + test/lint results, and prompts developer for local review, live testing, and verification. If developer provides review feedback, `mm_vc_agent` iterates locally without touching git or GitHub.
 
-### Phase 3 — QA Sign-off & Sync (on `MM_BUGFIXED #<id>` / `MM_FEATDONE #<id>`)
-`mm_gh_agent` verifies build, squash-merges PR, closes Issue, switches to `main`, pulls latest.
+### Phase 3 — Single-Go GitHub Lifecycle, Merge & Sync (on `MM_BUGFIXED` / `MM_FEATDONE`)
+Once developer completes local QA and signs off with `MM_BUGFIXED` (or `MM_FEATDONE`), `mm_gh_agent` executes the entire GitHub lifecycle in a single automated chain: creates Issue with Executive Summary, checks out branch `fix/<id>-<operator>-<slug>` (or `feat/...`), commits with structured multi-line message, pushes, opens PR (`Closes #<id>`), squash-merges PR, closes Issue, switches to `main`, and pulls latest. Advise fresh chat session.
 
 ## Release Lifecycle (`MM_RELEASE` / `MM_RELEASEDONE`)
 - `MM_RELEASE <version>`: checks clean tree (`git status -s`), blocks if PRs open (`--limit 10`), warns on open issues, verifies SemVer, prevents tag collisions, checks out `release/v<version>-(<vcode>)`, bumps version & increments `versioncode = current + 1`, commits, opens release PR `Release: v<version> (<vcode>)` in code freeze.

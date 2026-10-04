@@ -94,9 +94,10 @@ function runInit(targetDir) {
   console.log('\n💡 Quick Cheat Sheet:');
   console.log('  • MM_BUG [details]     ➔ Start bug investigation & plan');
   console.log('  • MM_FEAT [details]    ➔ Start feature design & plan');
+  console.log('  • PROCEED              ➔ Execute code locally & test');
   console.log('  • MM_GETISSUE          ➔ Check active issue # and PR link');
-  console.log('  • MM_BUGFIXED #<id>    ➔ Verify & squash-merge bug PR');
-  console.log('  • MM_FEATDONE #<id>    ➔ Verify & squash-merge feature PR');
+  console.log('  • MM_BUGFIXED          ➔ Single-go GitHub lifecycle & merge bug');
+  console.log('  • MM_FEATDONE          ➔ Single-go GitHub lifecycle & merge feature');
   console.log('  • MM_RELEASE <version> ➔ Pre-release gate & release candidate PR');
   console.log('  • MM_RELEASEDONE       ➔ Tag version & publish GitHub Release');
   console.log('\n✨ Snippets: Type "mmbug", "mmfeat", "mmgetissue", "mmfix", "mmdone", "mmrelease", "mmreleasedone" + Tab in your editor.\n');

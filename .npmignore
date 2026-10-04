@@ -1,0 +1,4 @@
+docs/*
+templates/*
+.gitignore
+*.env.mm_agent.example

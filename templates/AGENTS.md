@@ -5,10 +5,9 @@ This project is enabled with the **MM Dual-Agent Suite** (`mm_vc_agent` & `mm_gh
 ## 1. Quick Command Reference
 * `MM_BUG [details]`: Bug investigation, root cause, interactive artifact plan. (Read-Only)
 * `MM_FEAT [details]`: Feature architecture design, interactive artifact plan. (Read-Only)
-* `PROCEED` / `COMMIT` / `APPROVE`: Approve plan ➔ issue/branch created ➔ local edits ➔ **STOP FOR CODE REVIEW** ➔ approve diff ➔ commit & open PR.
+* `PROCEED`: Approve blueprint ➔ local code edits & validation ➔ **STOP FOR LOCAL CODE REVIEW & QA GATE**.
 * `MM_GETISSUE`: Active issue #, PR link (4-line card).
-* `MM_BUGFIXED #<id>`: Merge bug fix, close issue.
-* `MM_FEATDONE #<id>`: Merge feature, close issue.
+* `MM_BUGFIXED` / `MM_FEATDONE`: Complete single-go GitHub lifecycle (Issue ➔ Branch ➔ Commit ➔ PR ➔ Squash-Merge ➔ Sync `main`).
 * `MM_RELEASE <version>`: Pre-release gate, collision check, checkout `release/v<version>-(<vcode>)`, bump version & versioncode (`vcode = current + 1`), release PR `Release: v<version> (<vcode>)`.
 * `MM_RELEASEDONE`: Squash-merge release PR (keep branch), apply dual tags (`v<version>` & `vcode-(<vcode>)`), publish GitHub Release `Release v<version> (<vcode>)`.
 
